@@ -5,6 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { ArrowLeft, Search, MapPin, DollarSign, Clock, Users, Filter } from 'lucide-react';
+import { useJobs } from '@/hooks/useJobs';
 
 interface BrowseJobsPageProps {
   onViewChange: (view: string) => void;
@@ -16,7 +17,27 @@ export const BrowseJobsPage = ({ onViewChange }: BrowseJobsPageProps) => {
   const [budgetFilter, setBudgetFilter] = useState('all');
   const [locationFilter, setLocationFilter] = useState('');
 
-  const jobs = [
+  const { data: jobs = [], isLoading, error } = useJobs();
+
+  const formatBudget = (min: number | null, max: number | null) => {
+    if (!min && !max) return 'Budget TBD';
+    if (!max) return `$${(min! / 100).toLocaleString()}+`;
+    if (!min) return `Up to $${(max / 100).toLocaleString()}`;
+    return `$${(min / 100).toLocaleString()} - $${(max / 100).toLocaleString()}`;
+  };
+
+  const getTimeAgo = (dateString: string) => {
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffInHours = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60));
+    
+    if (diffInHours < 1) return 'Less than an hour ago';
+    if (diffInHours < 24) return `${diffInHours} hour${diffInHours === 1 ? '' : 's'} ago`;
+    const diffInDays = Math.floor(diffInHours / 24);
+    return `${diffInDays} day${diffInDays === 1 ? '' : 's'} ago`;
+  };
+
+  const staticJobs = [
     {
       id: 1,
       title: "Kitchen Cabinet Painting",
@@ -100,7 +121,10 @@ export const BrowseJobsPage = ({ onViewChange }: BrowseJobsPageProps) => {
   const categories = ['All', 'Painting', 'Plumbing', 'Electrical', 'General Maintenance', 'Carpentry', 'Cleaning', 'Landscaping'];
   const budgetRanges = ['All', 'Under $200', '$200 - $500', '$500 - $1,000', '$1,000+'];
 
-  const filteredJobs = jobs.filter(job => {
+  // Combine real jobs from database with static fallback data
+  const allJobs = [...jobs, ...staticJobs];
+
+  const filteredJobs = allJobs.filter(job => {
     const matchesSearch = job.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
                          job.description.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCategory = categoryFilter === 'all' || job.category.toLowerCase() === categoryFilter.toLowerCase();
@@ -109,7 +133,7 @@ export const BrowseJobsPage = ({ onViewChange }: BrowseJobsPageProps) => {
     return matchesSearch && matchesCategory && matchesLocation;
   });
 
-  const handleBidClick = (jobId: number) => {
+  const handleBidClick = (jobId: string | number) => {
     onViewChange(`bid-${jobId}`);
   };
 
@@ -196,7 +220,7 @@ export const BrowseJobsPage = ({ onViewChange }: BrowseJobsPageProps) => {
         {/* Results Summary */}
         <div className="mb-6">
           <p className="text-muted-foreground">
-            Showing {filteredJobs.length} of {jobs.length} jobs
+            {isLoading ? 'Loading jobs...' : `Showing ${filteredJobs.length} of ${allJobs.length} jobs`}
           </p>
         </div>
 
@@ -209,7 +233,7 @@ export const BrowseJobsPage = ({ onViewChange }: BrowseJobsPageProps) => {
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-2">
                       <CardTitle className="text-xl">{job.title}</CardTitle>
-                      {job.verified && (
+                      {('homeowner_verified' in job ? job.homeowner_verified : job.verified) && (
                         <Badge variant="secondary" className="text-xs">Verified</Badge>
                       )}
                     </div>
@@ -220,18 +244,20 @@ export const BrowseJobsPage = ({ onViewChange }: BrowseJobsPageProps) => {
                       </div>
                       <div className="flex items-center">
                         <Clock className="h-4 w-4 mr-1" />
-                        {job.timePosted}
+                        {'created_at' in job ? getTimeAgo(job.created_at) : job.timePosted}
                       </div>
                       <div className="flex items-center">
                         <Users className="h-4 w-4 mr-1" />
-                        {job.bids} bids
+                        {('bids' in job) ? job.bids : 0} bids
                       </div>
                     </div>
                   </div>
                   <div className="text-right">
                     <div className="flex items-center justify-end mb-1">
                       <DollarSign className="h-4 w-4 text-primary" />
-                      <span className="font-semibold text-primary">{job.budget}</span>
+                      <span className="font-semibold text-primary">
+                        {'budget_min' in job ? formatBudget(job.budget_min, job.budget_max) : job.budget}
+                      </span>
                     </div>
                     <Badge variant="secondary">{job.category}</Badge>
                   </div>
@@ -241,8 +267,8 @@ export const BrowseJobsPage = ({ onViewChange }: BrowseJobsPageProps) => {
                 <p className="text-muted-foreground mb-4">{job.description}</p>
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                   <div className="flex items-center gap-4 text-sm">
-                    <span><strong>Timeline:</strong> {job.timeline}</span>
-                    <span><strong>Posted by:</strong> {job.homeowner}</span>
+                    <span><strong>Timeline:</strong> {job.timeline || 'TBD'}</span>
+                    <span><strong>Posted by:</strong> {'homeowner_name' in job ? job.homeowner_name : job.homeowner}</span>
                   </div>
                   <div className="flex gap-2">
                     <Button variant="outline" size="sm">
@@ -261,10 +287,12 @@ export const BrowseJobsPage = ({ onViewChange }: BrowseJobsPageProps) => {
           ))}
         </div>
 
-        {filteredJobs.length === 0 && (
+        {filteredJobs.length === 0 && !isLoading && (
           <Card className="text-center py-12">
             <CardContent>
-              <p className="text-muted-foreground mb-4">No jobs found matching your criteria.</p>
+              <p className="text-muted-foreground mb-4">
+                {error ? 'Error loading jobs. Please try again.' : 'No jobs found matching your criteria.'}
+              </p>
               <Button variant="outline" onClick={() => {
                 setSearchTerm('');
                 setCategoryFilter('all');

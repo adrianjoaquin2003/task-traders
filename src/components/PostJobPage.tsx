@@ -7,14 +7,14 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
 import { ArrowLeft, MapPin, DollarSign, Calendar, CheckCircle } from 'lucide-react';
-import { useToast } from '@/hooks/use-toast';
+import { useCreateJob, NewJob } from '@/hooks/useJobs';
 
 interface PostJobPageProps {
   onViewChange: (view: string) => void;
 }
 
 export const PostJobPage = ({ onViewChange }: PostJobPageProps) => {
-  const { toast } = useToast();
+  const createJobMutation = useCreateJob();
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -61,34 +61,70 @@ export const PostJobPage = ({ onViewChange }: PostJobPageProps) => {
     e.preventDefault();
     
     if (!formData.title || !formData.description || !formData.category || !formData.budget || !formData.location) {
-      toast({
-        title: "Missing Information",
-        description: "Please fill in all required fields.",
-        variant: "destructive"
-      });
       return;
     }
 
-    toast({
-      title: "Job Posted Successfully!",
-      description: "Your job has been posted and professionals will start bidding soon.",
-    });
+    // Parse budget range
+    const budgetRange = budgetRanges.find(range => 
+      range.toLowerCase().replace(/[\s$+]/g, '-') === formData.budget
+    );
+    
+    let budget_min = 0;
+    let budget_max = 0;
+    
+    if (budgetRange?.includes('Under $100')) {
+      budget_max = 10000; // $100 in cents
+    } else if (budgetRange?.includes('$100 - $300')) {
+      budget_min = 10000;
+      budget_max = 30000;
+    } else if (budgetRange?.includes('$300 - $500')) {
+      budget_min = 30000;
+      budget_max = 50000;
+    } else if (budgetRange?.includes('$500 - $1,000')) {
+      budget_min = 50000;
+      budget_max = 100000;
+    } else if (budgetRange?.includes('$1,000 - $2,500')) {
+      budget_min = 100000;
+      budget_max = 250000;
+    } else if (budgetRange?.includes('$2,500 - $5,000')) {
+      budget_min = 250000;
+      budget_max = 500000;
+    } else if (budgetRange?.includes('$5,000+')) {
+      budget_min = 500000;
+    }
 
-    // Reset form
-    setFormData({
-      title: '',
-      description: '',
-      category: '',
-      budget: '',
-      location: '',
-      timeline: '',
-      photos: []
-    });
+    const newJob: NewJob = {
+      title: formData.title,
+      description: formData.description,
+      category: formData.category,
+      budget_min,
+      budget_max,
+      budget_type: budgetRange?.includes('Hourly') ? 'hourly' : 'range',
+      location: formData.location,
+      timeline: formData.timeline,
+      homeowner_name: 'Anonymous User', // TODO: Replace with actual user name when auth is implemented
+      homeowner_verified: false
+    };
 
-    // Redirect to browse jobs after a short delay
-    setTimeout(() => {
-      onViewChange('browse-jobs');
-    }, 2000);
+    createJobMutation.mutate(newJob, {
+      onSuccess: () => {
+        // Reset form
+        setFormData({
+          title: '',
+          description: '',
+          category: '',
+          budget: '',
+          location: '',
+          timeline: '',
+          photos: []
+        });
+
+        // Redirect to browse jobs after a short delay
+        setTimeout(() => {
+          onViewChange('browse-jobs');
+        }, 2000);
+      }
+    });
   };
 
   const handleInputChange = (field: string, value: string) => {
@@ -242,8 +278,13 @@ export const PostJobPage = ({ onViewChange }: PostJobPageProps) => {
 
           {/* Submit */}
           <div className="flex flex-col sm:flex-row gap-4">
-            <Button type="submit" size="lg" className="flex-1">
-              Post Job
+            <Button 
+              type="submit" 
+              size="lg" 
+              className="flex-1"
+              disabled={createJobMutation.isPending}
+            >
+              {createJobMutation.isPending ? 'Posting...' : 'Post Job'}
             </Button>
             <Button 
               type="button" 

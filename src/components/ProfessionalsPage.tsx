@@ -6,6 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { ArrowLeft, Search, MapPin, Star, Shield, Briefcase, Phone, Mail, Filter } from 'lucide-react';
+import { useProfessionals } from '@/hooks/useProfessionals';
 
 interface ProfessionalsPageProps {
   onViewChange: (view: string) => void;
@@ -17,7 +18,14 @@ export const ProfessionalsPage = ({ onViewChange }: ProfessionalsPageProps) => {
   const [locationFilter, setLocationFilter] = useState('');
   const [ratingFilter, setRatingFilter] = useState('all');
 
-  const professionals = [
+  const { data: professionals = [], isLoading, error } = useProfessionals();
+
+  const formatPrice = (hourlyRate: number | null) => {
+    if (!hourlyRate) return 'Contact for pricing';
+    return `$${(hourlyRate / 100).toFixed(0)}/hour`;
+  };
+
+  const staticProfessionals = [
     {
       id: 1,
       name: "Carlos Rodriguez",
@@ -119,7 +127,10 @@ export const ProfessionalsPage = ({ onViewChange }: ProfessionalsPageProps) => {
   const skills = ['All', 'Painting', 'Plumbing', 'Electrical', 'General Repairs', 'Cleaning', 'HVAC', 'Carpentry'];
   const ratings = ['All', '4.5+ Stars', '4.0+ Stars', '3.5+ Stars'];
 
-  const filteredProfessionals = professionals.filter(pro => {
+  // Combine real professionals from database with static fallback data
+  const allProfessionals = [...professionals, ...staticProfessionals];
+
+  const filteredProfessionals = allProfessionals.filter(pro => {
     const matchesSearch = pro.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
                          pro.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          pro.skills.some(skill => skill.toLowerCase().includes(searchTerm.toLowerCase()));
@@ -228,7 +239,7 @@ export const ProfessionalsPage = ({ onViewChange }: ProfessionalsPageProps) => {
         {/* Results Summary */}
         <div className="mb-6">
           <p className="text-muted-foreground">
-            Showing {filteredProfessionals.length} of {professionals.length} professionals
+            {isLoading ? 'Loading professionals...' : `Showing ${filteredProfessionals.length} of ${allProfessionals.length} professionals`}
           </p>
         </div>
 
@@ -239,7 +250,7 @@ export const ProfessionalsPage = ({ onViewChange }: ProfessionalsPageProps) => {
               <CardHeader>
                 <div className="flex items-start gap-4">
                   <Avatar className="w-16 h-16">
-                    <AvatarImage src={pro.avatar} alt={pro.name} />
+                    <AvatarImage src={('avatar_url' in pro) ? pro.avatar_url || '' : pro.avatar} alt={pro.name} />
                     <AvatarFallback>{pro.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
                   </Avatar>
                   <div className="flex-1 min-w-0">
@@ -253,7 +264,9 @@ export const ProfessionalsPage = ({ onViewChange }: ProfessionalsPageProps) => {
                     <div className="flex items-center gap-1 mb-2">
                       {renderStars(pro.rating)}
                       <span className="ml-1 text-sm font-medium">{pro.rating}</span>
-                      <span className="text-sm text-muted-foreground">({pro.reviewCount} reviews)</span>
+                      <span className="text-sm text-muted-foreground">
+                        ({('review_count' in pro) ? pro.review_count : pro.reviewCount} reviews)
+                      </span>
                     </div>
                     <div className="flex items-center text-sm text-muted-foreground">
                       <MapPin className="h-4 w-4 mr-1" />
@@ -261,8 +274,12 @@ export const ProfessionalsPage = ({ onViewChange }: ProfessionalsPageProps) => {
                     </div>
                   </div>
                   <div className="text-right">
-                    <div className="text-lg font-semibold text-primary mb-1">{pro.startingPrice}</div>
-                    <Badge variant="secondary" className="text-xs">{pro.responseTime}</Badge>
+                    <div className="text-lg font-semibold text-primary mb-1">
+                      {'hourly_rate' in pro ? formatPrice(pro.hourly_rate) : pro.startingPrice}
+                    </div>
+                    <Badge variant="secondary" className="text-xs">
+                      {('response_time' in pro) ? pro.response_time : pro.responseTime}
+                    </Badge>
                   </div>
                 </div>
               </CardHeader>
@@ -272,10 +289,14 @@ export const ProfessionalsPage = ({ onViewChange }: ProfessionalsPageProps) => {
                 <div className="grid grid-cols-2 gap-4 mb-4 text-sm">
                   <div className="flex items-center">
                     <Briefcase className="h-4 w-4 mr-2 text-muted-foreground" />
-                    <span>{pro.experience} experience</span>
+                    <span>
+                      {('experience_years' in pro) ? `${pro.experience_years} years` : pro.experience} experience
+                    </span>
                   </div>
                   <div className="flex items-center">
-                    <span className="font-medium">{pro.completedJobs} jobs completed</span>
+                    <span className="font-medium">
+                      {('completed_jobs' in pro) ? pro.completed_jobs : pro.completedJobs} jobs completed
+                    </span>
                   </div>
                 </div>
 
@@ -305,10 +326,12 @@ export const ProfessionalsPage = ({ onViewChange }: ProfessionalsPageProps) => {
           ))}
         </div>
 
-        {filteredProfessionals.length === 0 && (
+        {filteredProfessionals.length === 0 && !isLoading && (
           <Card className="text-center py-12">
             <CardContent>
-              <p className="text-muted-foreground mb-4">No professionals found matching your criteria.</p>
+              <p className="text-muted-foreground mb-4">
+                {error ? 'Error loading professionals. Please try again.' : 'No professionals found matching your criteria.'}
+              </p>
               <Button variant="outline" onClick={() => {
                 setSearchTerm('');
                 setSkillFilter('all');
