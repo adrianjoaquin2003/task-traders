@@ -14,7 +14,177 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      bids: {
+        Row: {
+          amount: number
+          created_at: string
+          id: string
+          job_id: string
+          message: string | null
+          professional_id: string
+          status: string | null
+          timeline: string | null
+          updated_at: string
+        }
+        Insert: {
+          amount: number
+          created_at?: string
+          id?: string
+          job_id: string
+          message?: string | null
+          professional_id: string
+          status?: string | null
+          timeline?: string | null
+          updated_at?: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          id?: string
+          job_id?: string
+          message?: string | null
+          professional_id?: string
+          status?: string | null
+          timeline?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bids_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "jobs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bids_professional_id_fkey"
+            columns: ["professional_id"]
+            isOneToOne: false
+            referencedRelation: "professionals"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      jobs: {
+        Row: {
+          budget_max: number | null
+          budget_min: number | null
+          budget_type: string | null
+          category: string
+          created_at: string
+          description: string
+          homeowner_id: string | null
+          homeowner_name: string
+          homeowner_verified: boolean | null
+          id: string
+          location: string
+          status: string | null
+          timeline: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          budget_max?: number | null
+          budget_min?: number | null
+          budget_type?: string | null
+          category: string
+          created_at?: string
+          description: string
+          homeowner_id?: string | null
+          homeowner_name: string
+          homeowner_verified?: boolean | null
+          id?: string
+          location: string
+          status?: string | null
+          timeline?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          budget_max?: number | null
+          budget_min?: number | null
+          budget_type?: string | null
+          category?: string
+          created_at?: string
+          description?: string
+          homeowner_id?: string | null
+          homeowner_name?: string
+          homeowner_verified?: boolean | null
+          id?: string
+          location?: string
+          status?: string | null
+          timeline?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      professionals: {
+        Row: {
+          avatar_url: string | null
+          completed_jobs: number | null
+          created_at: string
+          description: string | null
+          email: string | null
+          experience_years: number | null
+          hourly_rate: number | null
+          id: string
+          location: string
+          name: string
+          phone: string | null
+          rating: number | null
+          response_time: string | null
+          review_count: number | null
+          skills: string[] | null
+          title: string
+          updated_at: string
+          user_id: string | null
+          verified: boolean | null
+        }
+        Insert: {
+          avatar_url?: string | null
+          completed_jobs?: number | null
+          created_at?: string
+          description?: string | null
+          email?: string | null
+          experience_years?: number | null
+          hourly_rate?: number | null
+          id?: string
+          location: string
+          name: string
+          phone?: string | null
+          rating?: number | null
+          response_time?: string | null
+          review_count?: number | null
+          skills?: string[] | null
+          title: string
+          updated_at?: string
+          user_id?: string | null
+          verified?: boolean | null
+        }
+        Update: {
+          avatar_url?: string | null
+          completed_jobs?: number | null
+          created_at?: string
+          description?: string | null
+          email?: string | null
+          experience_years?: number | null
+          hourly_rate?: number | null
+          id?: string
+          location?: string
+          name?: string
+          phone?: string | null
+          rating?: number | null
+          response_time?: string | null
+          review_count?: number | null
+          skills?: string[] | null
+          title?: string
+          updated_at?: string
+          user_id?: string | null
+          verified?: boolean | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
