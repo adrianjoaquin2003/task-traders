@@ -16,11 +16,6 @@ export const HomePage = ({ onViewChange }: HomePageProps) => {
       description: "All contractors are background-checked and verified for quality work."
     },
     {
-      icon: Shield,
-      title: "Secure Payments",
-      description: "Protected payments released only when work is completed to satisfaction."
-    },
-    {
       icon: Star,
       title: "Quality Guarantee",
       description: "All work comes with our satisfaction guarantee and contractor insurance."
@@ -28,41 +23,14 @@ export const HomePage = ({ onViewChange }: HomePageProps) => {
   ];
 
   const serviceCategories = [
-    { icon: Paintbrush, name: "Painting", jobs: 45 },
-    { icon: Wrench, name: "Plumbing", jobs: 32 },
-    { icon: Zap, name: "Electrical", jobs: 28 },
-    { icon: Home, name: "General Maintenance", jobs: 67 }
+    { icon: Paintbrush, name: "Painting", jobs: 0 },
+    { icon: Wrench, name: "Plumbing", jobs: 0 },
+    { icon: Zap, name: "Electrical", jobs: 0 },
+    { icon: Home, name: "General Maintenance", jobs: 0 }
   ];
 
-  const recentJobs = [
-    {
-      id: 1,
-      title: "Kitchen Cabinet Painting",
-      description: "Need to paint 20 kitchen cabinets in white semi-gloss",
-      budget: "$800 - $1,200",
-      location: "Downtown, Seattle",
-      bids: 8,
-      timePosted: "2 hours ago"
-    },
-    {
-      id: 2,
-      title: "Bathroom Faucet Replacement", 
-      description: "Replace old bathroom faucet with new modern fixture",
-      budget: "$150 - $300",
-      location: "Bellevue, WA",
-      bids: 12,
-      timePosted: "4 hours ago"
-    },
-    {
-      id: 3,
-      title: "Ceiling Fan Installation",
-      description: "Install 3 ceiling fans in bedrooms, wiring already in place",
-      budget: "$200 - $400",
-      location: "Redmond, WA",
-      bids: 6,
-      timePosted: "6 hours ago"
-    }
-  ];
+  // Recent jobs will be fetched from the database
+  const recentJobs: any[] = [];
 
   return (
     <div className="min-h-screen bg-background">
@@ -108,7 +76,7 @@ export const HomePage = ({ onViewChange }: HomePageProps) => {
             </p>
           </div>
           
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-2 gap-8">
             {features.map((feature, index) => (
               <Card key={index} className="text-center border-0 shadow-elegant">
                 <CardHeader>
@@ -202,7 +170,7 @@ export const HomePage = ({ onViewChange }: HomePageProps) => {
                 <Button size="lg" variant="accent" onClick={() => onViewChange('post-job')}>
                   Post Your First Job
                 </Button>
-                <Button size="lg" variant="outline" className="border-white text-black hover:bg-white hover:text-primary" onClick={() => onViewChange('professionals')}>
+                <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-primary" onClick={() => onViewChange('professionals')}>
                   Browse Professionals
                 </Button>
               </div>
