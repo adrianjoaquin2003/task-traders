@@ -1,5 +1,5 @@
-// IMPORT REACT HOOKS - useState and useEffect for component state and lifecycle
-import { useState, useEffect } from 'react';
+// IMPORT REACT HOOK - useState lets us store and change data in our component
+import { useState } from 'react';
 
 // IMPORT OUR PAGE COMPONENTS - Each represents a different screen/page
 import { Navigation } from '@/components/Navigation';  // Top navigation bar
@@ -15,35 +15,6 @@ const Index = () => {
   // useState('home') means we start on the home page
   // currentView = current value, setCurrentView = function to change it
   const [currentView, setCurrentView] = useState('home');
-
-  // CURSOR GLOW EFFECT - Track mouse position for sea-blue glow
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      const glow = document.querySelector('body::after') as HTMLElement;
-      if (glow) {
-        document.documentElement.style.setProperty('--cursor-x', `${e.clientX}px`);
-        document.documentElement.style.setProperty('--cursor-y', `${e.clientY}px`);
-      }
-    };
-
-    const handleMouseEnter = () => {
-      document.documentElement.style.setProperty('--cursor-opacity', '1');
-    };
-
-    const handleMouseLeave = () => {
-      document.documentElement.style.setProperty('--cursor-opacity', '0');
-    };
-
-    document.addEventListener('mousemove', handleMouseMove);
-    document.addEventListener('mouseenter', handleMouseEnter);
-    document.addEventListener('mouseleave', handleMouseLeave);
-
-    return () => {
-      document.removeEventListener('mousemove', handleMouseMove);
-      document.removeEventListener('mouseenter', handleMouseEnter);
-      document.removeEventListener('mouseleave', handleMouseLeave);
-    };
-  }, []);
 
   // FUNCTION TO DECIDE WHICH PAGE TO SHOW - Based on currentView state
   const renderCurrentView = () => {
