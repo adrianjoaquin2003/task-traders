@@ -37,7 +37,7 @@ const Index = () => {
 
   // RENDER THE COMPONENT - This is what gets displayed on screen
   return (
-    <div className="min-h-screen bg-background">  {/* Full height container with background color */}
+    <div className="min-h-screen">  {/* Full height container */}
       {/* NAVIGATION BAR - Always visible at top, shows current page and handles navigation */}
       <Navigation currentView={currentView} onViewChange={setCurrentView} />
       
