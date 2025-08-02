@@ -269,6 +269,15 @@
   }
 
   /* ===== TROPICAL PATTERNS ===== */
+  .coral-reef-pattern {
+    background-image: 
+      radial-gradient(circle at 20% 20%, hsl(15 85% 65% / 0.1) 2px, transparent 2px),
+      radial-gradient(circle at 80% 80%, hsl(195 85% 55% / 0.1) 2px, transparent 2px),
+      radial-gradient(circle at 40% 70%, hsl(15 85% 65% / 0.05) 1px, transparent 1px);
+    background-size: 50px 50px, 80px 80px, 30px 30px;
+    animation: coral-drift 25s linear infinite;
+  }
+  
   .tropical-pattern {
     background-image: 
       linear-gradient(30deg, hsl(155 65% 45% / 0.05) 12%, transparent 12.5%, transparent 87%, hsl(155 65% 45% / 0.05) 87.5%, hsl(155 65% 45% / 0.05)),
@@ -289,6 +298,13 @@
   @keyframes wave-flow {
     0% { transform: translateX(0); }
     100% { transform: translateX(-50%); }
+  }
+  
+  @keyframes coral-drift {
+    0% { transform: translateX(0) translateY(0); }
+    33% { transform: translateX(-10px) translateY(-5px); }
+    66% { transform: translateX(5px) translateY(-10px); }
+    100% { transform: translateX(0) translateY(0); }
   }
   
   @keyframes palm-sway {
