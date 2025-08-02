@@ -1,29 +1,47 @@
+// IMPORT REACT HOOK - useState lets us store and change data in our component
 import { useState } from 'react';
-import { Navigation } from '@/components/Navigation';
-import { HomePage } from '@/components/HomePage';
-import { PostJobPage } from '@/components/PostJobPage';
-import { BrowseJobsPage } from '@/components/BrowseJobsPage';
-import { ProfessionalsPage } from '@/components/ProfessionalsPage';
 
+// IMPORT OUR PAGE COMPONENTS - Each represents a different screen/page
+import { Navigation } from '@/components/Navigation';  // Top navigation bar
+import { HomePage } from '@/components/HomePage';  // Landing page with hero section
+import { PostJobPage } from '@/components/PostJobPage';  // Form to create new jobs
+import { BrowseJobsPage } from '@/components/BrowseJobsPage';  // List of available jobs
+import { ProfessionalsPage } from '@/components/ProfessionalsPage';  // List of professionals
+
+// MAIN INDEX COMPONENT - This acts like a "single page app" controller
+// Instead of multiple HTML pages, we show different React components
 const Index = () => {
+  // STATE VARIABLE - Tracks which page/view the user is currently on
+  // useState('home') means we start on the home page
+  // currentView = current value, setCurrentView = function to change it
   const [currentView, setCurrentView] = useState('home');
 
+  // FUNCTION TO DECIDE WHICH PAGE TO SHOW - Based on currentView state
   const renderCurrentView = () => {
+    // Switch statement checks the currentView and returns the appropriate component
     switch (currentView) {
       case 'post-job':
+        // Show job posting form, pass function to change views
         return <PostJobPage onViewChange={setCurrentView} />;
       case 'browse-jobs':
+        // Show list of available jobs
         return <BrowseJobsPage onViewChange={setCurrentView} />;
       case 'professionals':
+        // Show list of professionals
         return <ProfessionalsPage onViewChange={setCurrentView} />;
       default:
+        // If currentView doesn't match anything above, show home page
         return <HomePage onViewChange={setCurrentView} />;
     }
   };
 
+  // RENDER THE COMPONENT - This is what gets displayed on screen
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background">  {/* Full height container with background color */}
+      {/* NAVIGATION BAR - Always visible at top, shows current page and handles navigation */}
       <Navigation currentView={currentView} onViewChange={setCurrentView} />
+      
+      {/* CURRENT PAGE CONTENT - Calls our function to show the right page */}
       {renderCurrentView()}
     </div>
   );

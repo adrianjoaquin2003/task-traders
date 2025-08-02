@@ -1,28 +1,36 @@
-import { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Badge } from '@/components/ui/badge';
-import { ArrowLeft, MapPin, DollarSign, Calendar, CheckCircle } from 'lucide-react';
-import { useCreateJob, NewJob } from '@/hooks/useJobs';
+// IMPORT REACT HOOKS AND UI COMPONENTS
+import { useState } from 'react';  // For managing form data state
+import { Button } from '@/components/ui/button';  // Reusable button component
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';  // Card layout components
+import { Input } from '@/components/ui/input';  // Text input field
+import { Label } from '@/components/ui/label';  // Form labels
+import { Textarea } from '@/components/ui/textarea';  // Multi-line text input
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';  // Dropdown selects
+import { Badge } from '@/components/ui/badge';  // Small status indicators
+import { ArrowLeft, MapPin, DollarSign, Calendar, CheckCircle } from 'lucide-react';  // Icons
+import { useCreateJob, NewJob } from '@/hooks/useJobs';  // Custom hook for creating jobs
 
+// INTERFACE - Defines props this component expects
 interface PostJobPageProps {
-  onViewChange: (view: string) => void;
+  onViewChange: (view: string) => void;  // Function to navigate between pages
 }
 
+// POST JOB PAGE COMPONENT - Form for creating new job posts
 export const PostJobPage = ({ onViewChange }: PostJobPageProps) => {
+  // MUTATION HOOK - Handles creating jobs in the database
+  // This gives us a function to call when user submits the form
   const createJobMutation = useCreateJob();
+  
+  // FORM STATE - Stores all the form field values
+  // useState with an object to track multiple form fields at once
   const [formData, setFormData] = useState({
-    title: '',
-    description: '',
-    category: '',
-    budget: '',
-    location: '',
-    timeline: '',
-    photos: []
+    title: '',        // Job title (e.g., "Kitchen Cabinet Painting")
+    description: '',  // Detailed description of the work
+    category: '',     // Type of work (painting, plumbing, etc.)
+    budget: '',       // Budget range selected by user
+    location: '',     // Where the job is located
+    timeline: '',     // When the work needs to be done
+    photos: []        // Array for uploaded photos (not implemented yet)
   });
 
   const categories = [
@@ -57,58 +65,68 @@ export const PostJobPage = ({ onViewChange }: PostJobPageProps) => {
     'Flexible timing'
   ];
 
+  // HANDLE FORM SUBMISSION - Called when user clicks "Post Job"
   const handleSubmit = (e: React.FormEvent) => {
+    // Prevent default form submission (which would reload the page)
     e.preventDefault();
     
+    // FORM VALIDATION - Check that required fields are filled
     if (!formData.title || !formData.description || !formData.category || !formData.budget || !formData.location) {
-      return;
+      return;  // Exit early if any required field is missing
     }
 
-    // Parse budget range
+    // BUDGET PARSING - Convert user-friendly budget range to database format
+    // Find the budget range that matches what user selected
     const budgetRange = budgetRanges.find(range => 
       range.toLowerCase().replace(/[\s$+]/g, '-') === formData.budget
     );
     
+    // Initialize budget values (stored in cents in database)
     let budget_min = 0;
     let budget_max = 0;
     
+    // CONVERT BUDGET RANGES TO CENTS - Database stores money as integers (cents)
+    // $100 = 10000 cents, $1000 = 100000 cents, etc.
     if (budgetRange?.includes('Under $100')) {
       budget_max = 10000; // $100 in cents
     } else if (budgetRange?.includes('$100 - $300')) {
-      budget_min = 10000;
-      budget_max = 30000;
+      budget_min = 10000;   // $100 in cents
+      budget_max = 30000;   // $300 in cents
     } else if (budgetRange?.includes('$300 - $500')) {
-      budget_min = 30000;
-      budget_max = 50000;
+      budget_min = 30000;   // $300 in cents
+      budget_max = 50000;   // $500 in cents
     } else if (budgetRange?.includes('$500 - $1,000')) {
-      budget_min = 50000;
-      budget_max = 100000;
+      budget_min = 50000;   // $500 in cents
+      budget_max = 100000;  // $1,000 in cents
     } else if (budgetRange?.includes('$1,000 - $2,500')) {
-      budget_min = 100000;
-      budget_max = 250000;
+      budget_min = 100000;  // $1,000 in cents
+      budget_max = 250000;  // $2,500 in cents
     } else if (budgetRange?.includes('$2,500 - $5,000')) {
-      budget_min = 250000;
-      budget_max = 500000;
+      budget_min = 250000;  // $2,500 in cents
+      budget_max = 500000;  // $5,000 in cents
     } else if (budgetRange?.includes('$5,000+')) {
-      budget_min = 500000;
+      budget_min = 500000;  // $5,000+ in cents
     }
 
+    // CREATE JOB OBJECT - Format data for database insertion
     const newJob: NewJob = {
       title: formData.title,
       description: formData.description,
       category: formData.category,
-      budget_min,
-      budget_max,
-      budget_type: budgetRange?.includes('Hourly') ? 'hourly' : 'range',
+      budget_min,  // Minimum budget in cents
+      budget_max,  // Maximum budget in cents
+      budget_type: budgetRange?.includes('Hourly') ? 'hourly' : 'range',  // Budget type
       location: formData.location,
       timeline: formData.timeline,
       homeowner_name: 'Anonymous User', // TODO: Replace with actual user name when auth is implemented
-      homeowner_verified: false
+      homeowner_verified: false  // TODO: Set based on actual user verification status
     };
 
+    // SUBMIT TO DATABASE - Call our mutation hook to create the job
     createJobMutation.mutate(newJob, {
+      // onSuccess runs if job creation was successful
       onSuccess: () => {
-        // Reset form
+        // RESET FORM - Clear all form fields after successful submission
         setFormData({
           title: '',
           description: '',
@@ -119,7 +137,8 @@ export const PostJobPage = ({ onViewChange }: PostJobPageProps) => {
           photos: []
         });
 
-        // Redirect to browse jobs after a short delay
+        // REDIRECT USER - Navigate to browse jobs page after a short delay
+        // This gives time for the success toast to show
         setTimeout(() => {
           onViewChange('browse-jobs');
         }, 2000);
@@ -127,7 +146,11 @@ export const PostJobPage = ({ onViewChange }: PostJobPageProps) => {
     });
   };
 
+  // HANDLE INPUT CHANGES - Updates form state when user types in any field
+  // This function is generic - it can update any field in our formData
   const handleInputChange = (field: string, value: string) => {
+    // Use functional update to modify the specific field while keeping others unchanged
+    // prev = previous state, ...prev = copy all existing fields, [field]: value = update specific field
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
