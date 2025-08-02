@@ -243,10 +243,10 @@
     position: absolute;
     top: 0;
     left: 0;
-    width: 100%;
+    width: 200%;
     height: 100%;
-    background: linear-gradient(45deg, transparent 40%, hsl(var(--primary) / 0.1) 50%, transparent 60%);
-    animation: gentle-wave 4s ease-in-out infinite;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120'%3E%3Cpath d='M0,96L48,106.7C96,117,192,139,288,138.7C384,139,480,117,576,106.7C672,96,768,96,864,101.3C960,107,1056,117,1152,112C1248,107,1344,85,1392,74.7L1440,64L1440,0L1392,0C1344,0,1248,0,1152,0C1056,0,960,0,864,0C768,0,672,0,576,0C480,0,384,0,288,0C192,0,96,0,48,0L0,0Z' fill='hsl(var(--background))'/%3E%3C/svg%3E") repeat-x;
+    animation: wave-flow 15s linear infinite;
   }
   
   .wave-divider-reverse {
@@ -262,10 +262,10 @@
     position: absolute;
     top: 0;
     left: 0;
-    width: 100%;
+    width: 200%;
     height: 100%;
-    background: linear-gradient(45deg, transparent 40%, hsl(var(--accent) / 0.1) 50%, transparent 60%);
-    animation: gentle-wave 6s ease-in-out infinite reverse;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120'%3E%3Cpath d='M0,96L48,106.7C96,117,192,139,288,138.7C384,139,480,117,576,106.7C672,96,768,96,864,101.3C960,107,1056,117,1152,112C1248,107,1344,85,1392,74.7L1440,64L1440,0L1392,0C1344,0,1248,0,1152,0C1056,0,960,0,864,0C768,0,672,0,576,0C480,0,384,0,288,0C192,0,96,0,48,0L0,0Z' fill='hsl(var(--secondary))'/%3E%3C/svg%3E") repeat-x;
+    animation: wave-flow 20s linear infinite reverse;
   }
 
   /* ===== TROPICAL PATTERNS ===== */
@@ -285,34 +285,10 @@
     animation: tropical-float 35s linear infinite;
   }
 
-  /* ===== ANIMATED GRADIENTS ===== */
-  .animated-gradient {
-    position: relative;
-    overflow: hidden;
-  }
-  
-  .animated-gradient::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(45deg, transparent 30%, hsl(var(--primary) / 0.25) 40%, hsl(var(--accent) / 0.25) 60%, transparent 70%);
-    animation: gentle-wave 4s ease-in-out infinite;
-    pointer-events: none;
-    z-index: 1;
-  }
-  
-  .animated-gradient > * {
-    position: relative;
-    z-index: 2;
-  }
-
   /* ===== KEYFRAME ANIMATIONS ===== */
-  @keyframes gentle-wave {
-    0%, 100% { transform: translateX(-50px) scaleX(1); }
-    50% { transform: translateX(50px) scaleX(1.1); }
+  @keyframes wave-flow {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
   }
   
   @keyframes palm-sway {
