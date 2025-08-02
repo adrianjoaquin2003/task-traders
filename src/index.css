@@ -177,7 +177,12 @@
   /* Set base page styling with gradient background */
   body {
     @apply text-foreground;
-    background: linear-gradient(135deg, hsl(var(--background)), hsl(var(--secondary) / 0.3), hsl(var(--primary) / 0.05), hsl(var(--background)));
+    background: linear-gradient(135deg, 
+      hsl(0 0% 99%), 
+      hsl(15 45% 94%), 
+      hsl(195 35% 96%), 
+      hsl(0 0% 99%)
+    );
     background-attachment: fixed;
     min-height: 100vh;
   }
