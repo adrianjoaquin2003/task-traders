@@ -2,7 +2,6 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Hammer, Users, Shield, Star, ArrowRight, Wrench, Paintbrush, Zap, Home, CheckCircle } from 'lucide-react';
-import { useJobs } from '@/hooks/useJobs';
 import heroImage from '@/assets/hero-home-services.jpg';
 
 interface HomePageProps {
@@ -17,18 +16,21 @@ export const HomePage = ({ onViewChange }: HomePageProps) => {
       description: "All contractors are background-checked and verified for quality work."
     },
     {
-      icon: Shield,
-      title: "Secure Payments",
-      description: "Protected payments released only when work is completed to satisfaction."
-    },
-    {
       icon: Star,
       title: "Quality Guarantee",
       description: "All work comes with our satisfaction guarantee and contractor insurance."
     }
   ];
 
-  const { data: jobs = [] } = useJobs();
+  const serviceCategories = [
+    { icon: Paintbrush, name: "Painting", jobs: 0 },
+    { icon: Wrench, name: "Plumbing", jobs: 0 },
+    { icon: Zap, name: "Electrical", jobs: 0 },
+    { icon: Home, name: "General Maintenance", jobs: 0 }
+  ];
+
+  // Recent jobs will be fetched from the database
+  const recentJobs: any[] = [];
 
   return (
     <div className="min-h-screen bg-background">
@@ -74,7 +76,7 @@ export const HomePage = ({ onViewChange }: HomePageProps) => {
             </p>
           </div>
           
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-2 gap-8">
             {features.map((feature, index) => (
               <Card key={index} className="text-center border-0 shadow-elegant">
                 <CardHeader>
@@ -92,52 +94,68 @@ export const HomePage = ({ onViewChange }: HomePageProps) => {
         </div>
       </section>
 
+      {/* Service Categories */}
+      <section className="py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-foreground mb-4">Popular Services</h2>
+            <p className="text-muted-foreground">Find professionals for any home project</p>
+          </div>
+          
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {serviceCategories.map((category, index) => (
+              <Card key={index} className="hover:shadow-elegant transition-all cursor-pointer" onClick={() => onViewChange('browse-jobs')}>
+                <CardContent className="p-6 text-center">
+                  <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-4">
+                    <category.icon className="h-6 w-6 text-primary" />
+                  </div>
+                  <h3 className="font-semibold text-foreground mb-2">{category.name}</h3>
+                  <Badge variant="secondary">{category.jobs} active jobs</Badge>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
 
       {/* Recent Jobs */}
-      {jobs.length > 0 && (
-        <section className="py-16 bg-secondary/50">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex justify-between items-center mb-12">
-              <div>
-                <h2 className="text-3xl font-bold text-foreground mb-4">Recent Job Posts</h2>
-                <p className="text-muted-foreground">See what homeowners are looking for</p>
-              </div>
-              <Button variant="outline" onClick={() => onViewChange('browse-jobs')}>
-                View All Jobs
-                <ArrowRight className="h-4 w-4" />
-              </Button>
+      <section className="py-16 bg-secondary/50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center mb-12">
+            <div>
+              <h2 className="text-3xl font-bold text-foreground mb-4">Recent Job Posts</h2>
+              <p className="text-muted-foreground">See what homeowners are looking for</p>
             </div>
-            
-            <div className="grid lg:grid-cols-3 gap-6">
-              {jobs.slice(0, 3).map((job) => (
-                <Card key={job.id} className="hover:shadow-elegant transition-all cursor-pointer">
-                  <CardHeader>
-                    <div className="flex justify-between items-start">
-                      <div>
-                        <CardTitle className="text-lg">{job.title}</CardTitle>
-                        <p className="text-sm text-muted-foreground mt-1">{job.location}</p>
-                      </div>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-muted-foreground mb-4">{job.description}</p>
-                    <div className="flex justify-between items-center">
-                      <span className="font-semibold text-primary">
-                        {job.budget_min && job.budget_max 
-                          ? `$${job.budget_min / 100} - $${job.budget_max / 100}` 
-                          : 'Budget TBD'}
-                      </span>
-                      <span className="text-sm text-muted-foreground">
-                        {new Date(job.created_at).toLocaleDateString()}
-                      </span>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
+            <Button variant="outline" onClick={() => onViewChange('browse-jobs')}>
+              View All Jobs
+              <ArrowRight className="h-4 w-4" />
+            </Button>
           </div>
-        </section>
-      )}
+          
+          <div className="grid lg:grid-cols-3 gap-6">
+            {recentJobs.map((job) => (
+              <Card key={job.id} className="hover:shadow-elegant transition-all cursor-pointer">
+                <CardHeader>
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <CardTitle className="text-lg">{job.title}</CardTitle>
+                      <p className="text-sm text-muted-foreground mt-1">{job.location}</p>
+                    </div>
+                    <Badge variant="secondary">{job.bids} bids</Badge>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-muted-foreground mb-4">{job.description}</p>
+                  <div className="flex justify-between items-center">
+                    <span className="font-semibold text-primary">{job.budget}</span>
+                    <span className="text-sm text-muted-foreground">{job.timePosted}</span>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
 
       {/* CTA Section */}
       <section className="py-16">
@@ -152,7 +170,7 @@ export const HomePage = ({ onViewChange }: HomePageProps) => {
                 <Button size="lg" variant="accent" onClick={() => onViewChange('post-job')}>
                   Post Your First Job
                 </Button>
-                <Button size="lg" variant="outline" className="border-white text-black hover:bg-white hover:text-primary" onClick={() => onViewChange('professionals')}>
+                <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-primary" onClick={() => onViewChange('professionals')}>
                   Browse Professionals
                 </Button>
               </div>

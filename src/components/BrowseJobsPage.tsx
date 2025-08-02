@@ -37,8 +37,9 @@ export const BrowseJobsPage = ({ onViewChange }: BrowseJobsPageProps) => {
     return `${diffInDays} day${diffInDays === 1 ? '' : 's'} ago`;
   };
 
-  // Dynamic categories and budget ranges from actual data
-  const categories = ['All', ...Array.from(new Set(jobs.map(job => job.category)))];
+  // All jobs now come from the database
+
+  const categories = ['All', 'Painting', 'Plumbing', 'Electrical', 'General Maintenance', 'Carpentry', 'Cleaning', 'Landscaping'];
   const budgetRanges = ['All', 'Under $200', '$200 - $500', '$500 - $1,000', '$1,000+'];
 
   // Use only real jobs from database
