@@ -25,110 +25,13 @@ export const ProfessionalsPage = ({ onViewChange }: ProfessionalsPageProps) => {
     return `$${(hourlyRate / 100).toFixed(0)}/hour`;
   };
 
-  const staticProfessionals = [
-    {
-      id: 1,
-      name: "Carlos Rodriguez",
-      title: "Professional Painter",
-      rating: 4.9,
-      reviewCount: 127,
-      location: "Seattle, WA",
-      skills: ["Interior Painting", "Exterior Painting", "Cabinet Painting", "Wallpaper Removal"],
-      experience: "8 years",
-      completedJobs: 156,
-      verified: true,
-      responseTime: "Within 2 hours",
-      startingPrice: "$45/hour",
-      description: "Experienced painter specializing in residential projects. Known for attention to detail and clean work.",
-      avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face"
-    },
-    {
-      id: 2,
-      name: "Jennifer Chen",
-      title: "Licensed Plumber",
-      rating: 4.8,
-      reviewCount: 89,
-      location: "Bellevue, WA",
-      skills: ["Pipe Repair", "Fixture Installation", "Water Heater Service", "Drain Cleaning"],
-      experience: "12 years",
-      completedJobs: 234,
-      verified: true,
-      responseTime: "Within 1 hour",
-      startingPrice: "$85/hour",
-      description: "Licensed master plumber with expertise in residential and light commercial work. Available for emergencies.",
-      avatar: "https://images.unsplash.com/photo-1494790108755-2616b612b1c0?w=150&h=150&fit=crop&crop=face"
-    },
-    {
-      id: 3,
-      name: "Mike Thompson",
-      title: "Certified Electrician",
-      rating: 4.7,
-      reviewCount: 156,
-      location: "Redmond, WA",
-      skills: ["Electrical Wiring", "Fixture Installation", "Panel Upgrades", "Outlet Installation"],
-      experience: "15 years",
-      completedJobs: 298,
-      verified: true,
-      responseTime: "Within 3 hours",
-      startingPrice: "$75/hour",
-      description: "Master electrician with residential and commercial experience. Specializes in modern home electrical systems.",
-      avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face"
-    },
-    {
-      id: 4,
-      name: "Sarah Williams",
-      title: "Handywoman & General Contractor",
-      rating: 4.9,
-      reviewCount: 78,
-      location: "Kirkland, WA",
-      skills: ["General Repairs", "Carpentry", "Drywall", "Tile Work"],
-      experience: "6 years",
-      completedJobs: 145,
-      verified: true,
-      responseTime: "Within 4 hours",
-      startingPrice: "$55/hour",
-      description: "Skilled in a wide range of home improvement projects. Known for quality work and excellent communication.",
-      avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face"
-    },
-    {
-      id: 5,
-      name: "David Martinez",
-      title: "HVAC Technician",
-      rating: 4.6,
-      reviewCount: 92,
-      location: "Tacoma, WA",
-      skills: ["AC Repair", "Heating Systems", "Duct Cleaning", "System Installation"],
-      experience: "10 years",
-      completedJobs: 187,
-      verified: true,
-      responseTime: "Within 6 hours",
-      startingPrice: "$80/hour",
-      description: "Experienced HVAC technician specializing in residential systems. Emergency service available.",
-      avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop&crop=face"
-    },
-    {
-      id: 6,
-      name: "Lisa Park",
-      title: "Professional Cleaner",
-      rating: 4.8,
-      reviewCount: 203,
-      location: "Renton, WA",
-      skills: ["Deep Cleaning", "Move-out Cleaning", "Post-Construction", "Regular Maintenance"],
-      experience: "5 years",
-      completedJobs: 312,
-      verified: false,
-      responseTime: "Within 24 hours",
-      startingPrice: "$35/hour",
-      description: "Detail-oriented cleaner with experience in residential and light commercial cleaning.",
-      avatar: "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=150&h=150&fit=crop&crop=face"
-    }
-  ];
+  // All professionals now come from the database
 
   const skills = ['All', 'Painting', 'Plumbing', 'Electrical', 'General Repairs', 'Cleaning', 'HVAC', 'Carpentry'];
   const ratings = ['All', '4.5+ Stars', '4.0+ Stars', '3.5+ Stars'];
 
-  // Combine real professionals from database with static fallback data
-  const allProfessionals = [...professionals, ...staticProfessionals];
+  // Use only real professionals from database
+  const allProfessionals = professionals;
 
   const filteredProfessionals = allProfessionals.filter(pro => {
     const matchesSearch = pro.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
@@ -250,7 +153,7 @@ export const ProfessionalsPage = ({ onViewChange }: ProfessionalsPageProps) => {
               <CardHeader>
                 <div className="flex items-start gap-4">
                   <Avatar className="w-16 h-16">
-                    <AvatarImage src={('avatar_url' in pro) ? pro.avatar_url || '' : pro.avatar} alt={pro.name} />
+                    <AvatarImage src={pro.avatar_url || ''} alt={pro.name} />
                     <AvatarFallback>{pro.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
                   </Avatar>
                   <div className="flex-1 min-w-0">
@@ -265,7 +168,7 @@ export const ProfessionalsPage = ({ onViewChange }: ProfessionalsPageProps) => {
                       {renderStars(pro.rating)}
                       <span className="ml-1 text-sm font-medium">{pro.rating}</span>
                       <span className="text-sm text-muted-foreground">
-                        ({('review_count' in pro) ? pro.review_count : pro.reviewCount} reviews)
+                        ({pro.review_count} reviews)
                       </span>
                     </div>
                     <div className="flex items-center text-sm text-muted-foreground">
@@ -275,10 +178,10 @@ export const ProfessionalsPage = ({ onViewChange }: ProfessionalsPageProps) => {
                   </div>
                   <div className="text-right">
                     <div className="text-lg font-semibold text-primary mb-1">
-                      {'hourly_rate' in pro ? formatPrice(pro.hourly_rate) : pro.startingPrice}
+                      {formatPrice(pro.hourly_rate)}
                     </div>
                     <Badge variant="secondary" className="text-xs">
-                      {('response_time' in pro) ? pro.response_time : pro.responseTime}
+                      {pro.response_time}
                     </Badge>
                   </div>
                 </div>
@@ -290,12 +193,12 @@ export const ProfessionalsPage = ({ onViewChange }: ProfessionalsPageProps) => {
                   <div className="flex items-center">
                     <Briefcase className="h-4 w-4 mr-2 text-muted-foreground" />
                     <span>
-                      {('experience_years' in pro) ? `${pro.experience_years} years` : pro.experience} experience
+                      {pro.experience_years} years experience
                     </span>
                   </div>
                   <div className="flex items-center">
                     <span className="font-medium">
-                      {('completed_jobs' in pro) ? pro.completed_jobs : pro.completedJobs} jobs completed
+                      {pro.completed_jobs} jobs completed
                     </span>
                   </div>
                 </div>

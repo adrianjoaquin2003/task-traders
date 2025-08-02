@@ -23,41 +23,14 @@ export const HomePage = ({ onViewChange }: HomePageProps) => {
   ];
 
   const serviceCategories = [
-    { icon: Paintbrush, name: "Painting", jobs: 45 },
-    { icon: Wrench, name: "Plumbing", jobs: 32 },
-    { icon: Zap, name: "Electrical", jobs: 28 },
-    { icon: Home, name: "General Maintenance", jobs: 67 }
+    { icon: Paintbrush, name: "Painting", jobs: 0 },
+    { icon: Wrench, name: "Plumbing", jobs: 0 },
+    { icon: Zap, name: "Electrical", jobs: 0 },
+    { icon: Home, name: "General Maintenance", jobs: 0 }
   ];
 
-  const recentJobs = [
-    {
-      id: 1,
-      title: "Kitchen Cabinet Painting",
-      description: "Need to paint 20 kitchen cabinets in white semi-gloss",
-      budget: "$800 - $1,200",
-      location: "Downtown, Seattle",
-      bids: 8,
-      timePosted: "2 hours ago"
-    },
-    {
-      id: 2,
-      title: "Bathroom Faucet Replacement", 
-      description: "Replace old bathroom faucet with new modern fixture",
-      budget: "$150 - $300",
-      location: "Bellevue, WA",
-      bids: 12,
-      timePosted: "4 hours ago"
-    },
-    {
-      id: 3,
-      title: "Ceiling Fan Installation",
-      description: "Install 3 ceiling fans in bedrooms, wiring already in place",
-      budget: "$200 - $400",
-      location: "Redmond, WA",
-      bids: 6,
-      timePosted: "6 hours ago"
-    }
-  ];
+  // Recent jobs will be fetched from the database
+  const recentJobs: any[] = [];
 
   return (
     <div className="min-h-screen bg-background">

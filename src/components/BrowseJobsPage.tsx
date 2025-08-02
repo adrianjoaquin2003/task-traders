@@ -37,92 +37,13 @@ export const BrowseJobsPage = ({ onViewChange }: BrowseJobsPageProps) => {
     return `${diffInDays} day${diffInDays === 1 ? '' : 's'} ago`;
   };
 
-  const staticJobs = [
-    {
-      id: 1,
-      title: "Kitchen Cabinet Painting",
-      description: "Need to paint 20 kitchen cabinets in white semi-gloss. Cabinets are currently oak stained. Looking for professional quality work with proper prep and finish. Must use high-quality paint suitable for kitchen use.",
-      budget: "$800 - $1,200",
-      location: "Downtown, Seattle",
-      category: "Painting",
-      bids: 8,
-      timePosted: "2 hours ago",
-      timeline: "Within a week",
-      homeowner: "Sarah M.",
-      verified: true
-    },
-    {
-      id: 2,
-      title: "Bathroom Faucet Replacement", 
-      description: "Replace old bathroom faucet with new modern fixture. New faucet already purchased (Delta brand). Need professional installation including shutoff valve replacement if needed.",
-      budget: "$150 - $300",
-      location: "Bellevue, WA",
-      category: "Plumbing",
-      bids: 12,
-      timePosted: "4 hours ago",
-      timeline: "ASAP",
-      homeowner: "Mike R.",
-      verified: true
-    },
-    {
-      id: 3,
-      title: "Ceiling Fan Installation",
-      description: "Install 3 ceiling fans in bedrooms. Wiring already in place, just need fans mounted and connected. Fans are purchased, just need installation labor.",
-      budget: "$200 - $400",
-      location: "Redmond, WA",
-      category: "Electrical",
-      bids: 6,
-      timePosted: "6 hours ago",
-      timeline: "Within a few days",
-      homeowner: "Jennifer L.",
-      verified: true
-    },
-    {
-      id: 4,
-      title: "Deck Staining and Repair",
-      description: "400 sq ft deck needs sanding, minor board replacement (estimate 5-8 boards), and re-staining. Deck is cedar, looking for natural stain color. Some loose boards and minor rot repair needed.",
-      budget: "$600 - $900",
-      location: "Kirkland, WA",
-      category: "General Maintenance",
-      bids: 15,
-      timePosted: "8 hours ago",
-      timeline: "Within a month",
-      homeowner: "David K.",
-      verified: true
-    },
-    {
-      id: 5,
-      title: "Garbage Disposal Installation",
-      description: "Install new garbage disposal unit in kitchen sink. Unit is already purchased (InSinkErator 3/4 HP). Need electrical connection and plumbing hookup.",
-      budget: "$120 - $250",
-      location: "Tacoma, WA",
-      category: "Plumbing",
-      bids: 9,
-      timePosted: "1 day ago",
-      timeline: "Within a week",
-      homeowner: "Lisa H.",
-      verified: false
-    },
-    {
-      id: 6,
-      title: "Interior Room Painting",
-      description: "Paint living room and dining room (approximately 400 sq ft total). Walls are currently light beige, want to change to light gray. Need professional prep work and clean application.",
-      budget: "$400 - $700",
-      location: "Renton, WA",
-      category: "Painting",
-      bids: 11,
-      timePosted: "1 day ago",
-      timeline: "Flexible",
-      homeowner: "Tom W.",
-      verified: true
-    }
-  ];
+  // All jobs now come from the database
 
   const categories = ['All', 'Painting', 'Plumbing', 'Electrical', 'General Maintenance', 'Carpentry', 'Cleaning', 'Landscaping'];
   const budgetRanges = ['All', 'Under $200', '$200 - $500', '$500 - $1,000', '$1,000+'];
 
-  // Combine real jobs from database with static fallback data
-  const allJobs = [...jobs, ...staticJobs];
+  // Use only real jobs from database
+  const allJobs = jobs;
 
   const filteredJobs = allJobs.filter(job => {
     const matchesSearch = job.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
@@ -233,9 +154,9 @@ export const BrowseJobsPage = ({ onViewChange }: BrowseJobsPageProps) => {
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-2">
                       <CardTitle className="text-xl">{job.title}</CardTitle>
-                      {('homeowner_verified' in job ? job.homeowner_verified : job.verified) && (
-                        <Badge variant="secondary" className="text-xs">Verified</Badge>
-                      )}
+                       {job.homeowner_verified && (
+                         <Badge variant="secondary" className="text-xs">Verified</Badge>
+                       )}
                     </div>
                     <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
                       <div className="flex items-center">
@@ -244,11 +165,11 @@ export const BrowseJobsPage = ({ onViewChange }: BrowseJobsPageProps) => {
                       </div>
                       <div className="flex items-center">
                         <Clock className="h-4 w-4 mr-1" />
-                        {'created_at' in job ? getTimeAgo(job.created_at) : job.timePosted}
+                        {getTimeAgo(job.created_at)}
                       </div>
                       <div className="flex items-center">
                         <Users className="h-4 w-4 mr-1" />
-                        {('bids' in job) ? job.bids : 0} bids
+                        0 bids
                       </div>
                     </div>
                   </div>
@@ -256,7 +177,7 @@ export const BrowseJobsPage = ({ onViewChange }: BrowseJobsPageProps) => {
                     <div className="flex items-center justify-end mb-1">
                       <DollarSign className="h-4 w-4 text-primary" />
                       <span className="font-semibold text-primary">
-                        {'budget_min' in job ? formatBudget(job.budget_min, job.budget_max) : job.budget}
+                        {formatBudget(job.budget_min, job.budget_max)}
                       </span>
                     </div>
                     <Badge variant="secondary">{job.category}</Badge>
@@ -268,7 +189,7 @@ export const BrowseJobsPage = ({ onViewChange }: BrowseJobsPageProps) => {
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                   <div className="flex items-center gap-4 text-sm">
                     <span><strong>Timeline:</strong> {job.timeline || 'TBD'}</span>
-                    <span><strong>Posted by:</strong> {'homeowner_name' in job ? job.homeowner_name : job.homeowner}</span>
+                    <span><strong>Posted by:</strong> {job.homeowner_name}</span>
                   </div>
                   <div className="flex gap-2">
                     <Button variant="outline" size="sm">
