@@ -82,9 +82,6 @@ export const HomePage = ({ onViewChange }: HomePageProps) => {
         </div>
       </section>
 
-      {/* Wave Divider */}
-      <div className="wave-divider"></div>
-
       {/* Features Section */}
       <section className="py-16 bg-gradient-hero/70 animated-gradient relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
@@ -113,9 +110,6 @@ export const HomePage = ({ onViewChange }: HomePageProps) => {
         </div>
       </section>
 
-      {/* Wave Divider */}
-      <div className="wave-divider-reverse"></div>
-
       {/* Service Categories */}
       <section className="py-16 relative">
         <div className="absolute inset-0 tropical-pattern opacity-5"></div>
@@ -140,9 +134,6 @@ export const HomePage = ({ onViewChange }: HomePageProps) => {
           </div>
         </div>
       </section>
-
-      {/* Wave Divider */}
-      <div className="wave-divider"></div>
 
       {/* Recent Jobs */}
       <section className="py-16 bg-secondary/50 relative">
@@ -189,9 +180,6 @@ export const HomePage = ({ onViewChange }: HomePageProps) => {
           </div>
         </div>
       </section>
-
-      {/* Wave Divider */}
-      <div className="wave-divider-reverse"></div>
 
       {/* CTA Section */}
       <section className="py-16 relative">
