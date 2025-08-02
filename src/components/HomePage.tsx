@@ -90,7 +90,7 @@ export const HomePage = ({ onViewChange }: HomePageProps) => {
                 Post Your Job
                 <ArrowRight className="h-5 w-5" />
               </Button>
-              <Button size="xl" variant="outline" className="border-white text-white hover:bg-white hover:text-primary" onClick={() => onViewChange('browse-jobs')}>
+              <Button size="xl" variant="outline" className="border-white text-black hover:bg-white hover:text-primary" onClick={() => onViewChange('browse-jobs')}>
                 Browse Jobs
               </Button>
             </div>
