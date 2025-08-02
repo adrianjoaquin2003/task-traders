@@ -184,6 +184,7 @@ export const HomePage = ({ onViewChange }: HomePageProps) => {
           Purpose: Creates visual flow between sections while maintaining theme
           Effect: Subtle gradient with animated wave overlay for movement
       */}
+      <div className="wave-divider" style="height: 60px;"></div>
 
       {/* ===============================================================================
           FEATURES SECTION - Platform value propositions
