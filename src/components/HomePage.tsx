@@ -117,7 +117,7 @@ export const HomePage = ({ onViewChange }: HomePageProps) => {
     .slice(0, 3);
 
   return (
-    <div className="wave-divider">
+    <div>
       {/* ===============================================================================
           HERO SECTION - Primary landing area with value proposition
           ===============================================================================
@@ -198,7 +198,7 @@ export const HomePage = ({ onViewChange }: HomePageProps) => {
           - Hover effects with coral glow and border transitions
           - Professional certification and climate expertise messaging
       */}
-      <section className="wave-divider pt-16">
+      <section className="py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           {/* Section header with compelling headline and supporting text */}
           <div className="text-center mb-12">
@@ -228,8 +228,6 @@ export const HomePage = ({ onViewChange }: HomePageProps) => {
         </div>
       </section>
 
-      {/* Wave divider with reverse orientation for visual variety */}
-      <div className="wave-divider-reverse"></div>
 
       {/* ===============================================================================
           SERVICE CATEGORIES - Bermuda-specific service offerings
@@ -276,8 +274,6 @@ export const HomePage = ({ onViewChange }: HomePageProps) => {
         </div>
       </section>
 
-      {/* Wave divider to separate sections */}
-      <div className="wave-divider"></div>
 
       {/* ===============================================================================
           RECENT JOBS SECTION - Social proof and platform activity
@@ -356,8 +352,6 @@ export const HomePage = ({ onViewChange }: HomePageProps) => {
         </div>
       </section>
 
-      {/* Wave divider with reverse orientation */}
-      <div className="wave-divider-reverse"></div>
 
       {/* ===============================================================================
           CALL-TO-ACTION SECTION - Final conversion opportunity
