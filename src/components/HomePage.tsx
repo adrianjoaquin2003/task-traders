@@ -80,23 +80,23 @@ export const HomePage = ({ onViewChange }: HomePageProps) => {
 
   /**
    * Service Categories Configuration
-   * Bermuda-specific services that address unique island challenges:
-   * - Hurricane prep/cleanup for seasonal storms
-   * - Saltwater damage repair from coastal exposure
-   * - Specialized roof services for wind resistance
-   * - Pool/deck maintenance for year-round outdoor living
-   * - Limestone restoration for historic Bermuda architecture
-   * - Garden/landscaping adapted to subtropical climate
+   * Bermuda-specific services that map to actual database categories:
+   * - General maintenance for various home repairs
+   * - Painting services for interior/exterior work
+   * - Plumbing services for water-related issues
+   * - Electrical work for power and lighting
+   * - HVAC for climate control in tropical weather
+   * - Landscaping for garden and outdoor spaces
    * 
    * Each category shows live job count to indicate market demand
    */
   const serviceCategories = [
-    { icon: Paintbrush, name: "Hurricane Prep & Cleanup", jobs: getActiveJobsCount("hurricane") },
-    { icon: Wrench, name: "Saltwater Damage Repair", jobs: getActiveJobsCount("saltwater") },
-    { icon: Umbrella, name: "Roof & Gutter Services", jobs: getActiveJobsCount("roof") },
-    { icon: Waves, name: "Pool & Deck Maintenance", jobs: getActiveJobsCount("pool") },
-    { icon: Home, name: "Limestone Restoration", jobs: getActiveJobsCount("limestone") },
-    { icon: Palmtree, name: "Garden & Landscaping", jobs: getActiveJobsCount("garden") }
+    { icon: Wrench, name: "General Maintenance", jobs: getActiveJobsCount("general-maintenance") },
+    { icon: Paintbrush, name: "Painting Services", jobs: getActiveJobsCount("painting") },
+    { icon: Umbrella, name: "Plumbing", jobs: getActiveJobsCount("plumbing") },
+    { icon: Zap, name: "Electrical", jobs: getActiveJobsCount("electrical") },
+    { icon: Home, name: "HVAC", jobs: getActiveJobsCount("hvac") },
+    { icon: Palmtree, name: "Landscaping", jobs: getActiveJobsCount("landscaping") }
   ];
 
   /**
