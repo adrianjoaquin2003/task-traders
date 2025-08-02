@@ -16,11 +16,6 @@ export const HomePage = ({ onViewChange }: HomePageProps) => {
       description: "All contractors are background-checked and verified for quality work."
     },
     {
-      icon: Shield,
-      title: "Secure Payments",
-      description: "Protected payments released only when work is completed to satisfaction."
-    },
-    {
       icon: Star,
       title: "Quality Guarantee",
       description: "All work comes with our satisfaction guarantee and contractor insurance."
