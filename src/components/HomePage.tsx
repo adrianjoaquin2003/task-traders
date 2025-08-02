@@ -49,7 +49,7 @@ export const HomePage = ({ onViewChange }: HomePageProps) => {
     .slice(0, 3);
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-gradient-to-br from-background via-secondary/30 to-background">
       {/* Hero Section */}
       <section className="relative py-20 lg:py-32 overflow-hidden">
         <div 
