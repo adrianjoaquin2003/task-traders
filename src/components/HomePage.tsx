@@ -198,7 +198,7 @@ export const HomePage = ({ onViewChange }: HomePageProps) => {
           - Hover effects with coral glow and border transitions
           - Professional certification and climate expertise messaging
       */}
-      <section className="py-20">
+      <section className="wave-divider">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           {/* Section header with compelling headline and supporting text */}
           <div className="text-center mb-12">
