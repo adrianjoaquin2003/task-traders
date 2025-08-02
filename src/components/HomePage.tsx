@@ -145,7 +145,10 @@ export const HomePage = ({ onViewChange }: HomePageProps) => {
       <div className="wave-divider"></div>
 
       {/* Recent Jobs */}
-      <section className="py-16 bg-secondary/50 relative">
+      <section className="py-16 relative overflow-hidden" style={{
+        background: 'linear-gradient(135deg, hsl(var(--secondary)), hsl(var(--background)))'
+      }}>
+        <div className="absolute inset-0 bg-gradient-to-br from-transparent via-primary/10 to-transparent animate-[gentle-wave_4s_ease-in-out_infinite]"></div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="flex justify-between items-center mb-12">
             <div>
