@@ -25,9 +25,9 @@ export const ProfessionalsPage = ({ onViewChange }: ProfessionalsPageProps) => {
     return `$${(hourlyRate / 100).toFixed(0)}/hour`;
   };
 
-  // All professionals now come from the database
-
-  const skills = ['All', 'Painting', 'Plumbing', 'Electrical', 'General Repairs', 'Cleaning', 'HVAC', 'Carpentry'];
+  // Dynamic skills from actual professional data
+  const allSkills = Array.from(new Set(professionals.flatMap(pro => pro.skills)));
+  const skills = ['All', ...allSkills];
   const ratings = ['All', '4.5+ Stars', '4.0+ Stars', '3.5+ Stars'];
 
   // Use only real professionals from database
