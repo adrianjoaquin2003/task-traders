@@ -293,9 +293,7 @@ export const HomePage = ({ onViewChange }: HomePageProps) => {
           - Custom gradient from secondary to background colors
           - Animated gradient overlay with gentle wave motion for movement
       */}
-      <section className="py-16 relative overflow-hidden" style={{
-        background: 'linear-gradient(135deg, hsl(var(--secondary)), hsl(var(--background)))'
-      }}>
+      <section className="py-16 relative overflow-hidden">
         {/* Animated gradient overlay for subtle movement effect */}
         <div className="absolute inset-0 bg-gradient-to-br from-transparent via-primary/10 to-transparent animate-[gentle-wave_4s_ease-in-out_infinite]"></div>
         
