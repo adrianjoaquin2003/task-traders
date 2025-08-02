@@ -2,112 +2,177 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+/* =========================================================================
+   DESIGN SYSTEM - SEMANTIC COLOR TOKENS
+   =========================================================================
+   
+   This file defines the complete design system for the application.
+   All colors use HSL format for better manipulation and consistency.
+   
+   IMPORTANT RULES:
+   - Never use direct colors (bg-blue-500) in components
+   - Always use semantic tokens (bg-primary, text-foreground)
+   - All colors must be in HSL format: hue saturation% lightness%
+   - Light and dark themes are automatically handled
+   
+   USAGE EXAMPLES:
+   - bg-primary (uses --primary token)
+   - text-muted-foreground (uses --muted-foreground token)
+   - border-border (uses --border token)
+   ========================================================================= */
 
 @layer base {
+  /* =====================================================================
+     LIGHT THEME (DEFAULT)
+     ===================================================================== */
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Base page colors */
+    --background: 0 0% 100%;                /* Main page background - pure white */
+    --foreground: 222.2 84% 4.9%;           /* Main text color - very dark blue */
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    /* Card component colors */
+    --card: 0 0% 100%;                      /* Card background - white */
+    --card-foreground: 222.2 84% 4.9%;     /* Card text color - dark blue */
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    /* Popover/dropdown colors */
+    --popover: 0 0% 100%;                   /* Popover background - white */
+    --popover-foreground: 222.2 84% 4.9%;  /* Popover text - dark blue */
 
-    --primary: 220 100% 50%;
-    --primary-foreground: 0 0% 100%;
-    --primary-glow: 220 100% 60%;
+    /* Primary brand colors */
+    --primary: 220 100% 50%;                /* Main brand color - bright blue */
+    --primary-foreground: 0 0% 100%;        /* Text on primary background - white */
+    --primary-glow: 220 100% 60%;           /* Lighter variant of primary for effects */
 
-    --secondary: 220 15% 96%;
-    --secondary-foreground: 220 20% 20%;
+    /* Secondary colors */
+    --secondary: 220 15% 96%;               /* Light gray background for secondary elements */
+    --secondary-foreground: 220 20% 20%;    /* Dark text on secondary background */
 
-    --muted: 220 15% 96%;
-    --muted-foreground: 220 10% 45%;
+    /* Muted colors for less prominent elements */
+    --muted: 220 15% 96%;                   /* Subtle background color */
+    --muted-foreground: 220 10% 45%;        /* Muted text color for secondary info */
 
-    --accent: 45 100% 50%;
-    --accent-foreground: 0 0% 100%;
+    /* Accent colors for highlights */
+    --accent: 45 100% 50%;                  /* Golden yellow accent color */
+    --accent-foreground: 0 0% 100%;         /* White text on accent background */
 
-    --success: 120 60% 45%;
-    --success-foreground: 0 0% 100%;
+    /* Success state colors */
+    --success: 120 60% 45%;                 /* Green for success messages */
+    --success-foreground: 0 0% 100%;        /* White text on success background */
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    /* Error/destructive state colors */
+    --destructive: 0 84.2% 60.2%;           /* Red for errors and destructive actions */
+    --destructive-foreground: 210 40% 98%;  /* Light text on destructive background */
 
-    --border: 220 15% 90%;
-    --input: 220 15% 90%;
-    --ring: 220 100% 50%;
+    /* UI element colors */
+    --border: 220 15% 90%;                  /* Border color for inputs, cards, etc. */
+    --input: 220 15% 90%;                   /* Input field background/border */
+    --ring: 220 100% 50%;                   /* Focus ring color (matches primary) */
 
+    /* ===== DESIGN EFFECTS ===== */
+    
+    /* Gradient definitions - use with bg-gradient-primary class */
     --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-glow)));
     --gradient-hero: linear-gradient(135deg, hsl(220 100% 50%), hsl(260 100% 60%));
+    
+    /* Shadow definitions - use with shadow-elegant class */
     --shadow-elegant: 0 10px 30px -10px hsl(var(--primary) / 0.2);
+    
+    /* Animation timing - use with transition-smooth class */
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
+    /* Border radius for consistent rounded corners */
     --radius: 0.5rem;
 
-    --sidebar-background: 0 0% 98%;
+    /* ===== SIDEBAR COMPONENT COLORS ===== */
+    
+    /* Sidebar background and text */
+    --sidebar-background: 0 0% 98%;         /* Very light gray sidebar background */
+    --sidebar-foreground: 240 5.3% 26.1%;  /* Dark text on sidebar */
 
-    --sidebar-foreground: 240 5.3% 26.1%;
+    /* Sidebar active/primary state */
+    --sidebar-primary: 240 5.9% 10%;              /* Very dark for active items */
+    --sidebar-primary-foreground: 0 0% 98%;       /* Light text on active items */
 
-    --sidebar-primary: 240 5.9% 10%;
+    /* Sidebar hover/accent state */
+    --sidebar-accent: 240 4.8% 95.9%;             /* Light hover background */
+    --sidebar-accent-foreground: 240 5.9% 10%;    /* Dark text on hover */
 
-    --sidebar-primary-foreground: 0 0% 98%;
-
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
-    --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    /* Sidebar borders and focus */
+    --sidebar-border: 220 13% 91%;          /* Sidebar border color */
+    --sidebar-ring: 217.2 91.2% 59.8%;     /* Focus ring for sidebar elements */
   }
 
+  /* =====================================================================
+     DARK THEME
+     =====================================================================
+     
+     Automatically applied when .dark class is present on html/body.
+     Colors are inverted and adjusted for dark backgrounds.
+     ===================================================================== */
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
+    /* Base page colors - dark theme */
+    --background: 222.2 84% 4.9%;           /* Very dark blue background */
+    --foreground: 210 40% 98%;              /* Very light text */
 
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
+    /* Card component colors - dark theme */
+    --card: 222.2 84% 4.9%;                 /* Dark card background */
+    --card-foreground: 210 40% 98%;         /* Light card text */
 
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
+    /* Popover/dropdown colors - dark theme */
+    --popover: 222.2 84% 4.9%;              /* Dark popover background */
+    --popover-foreground: 210 40% 98%;      /* Light popover text */
 
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
+    /* Primary brand colors - dark theme (inverted) */
+    --primary: 210 40% 98%;                 /* Light primary color */
+    --primary-foreground: 222.2 47.4% 11.2%; /* Dark text on light primary */
 
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
+    /* Secondary colors - dark theme */
+    --secondary: 217.2 32.6% 17.5%;         /* Dark gray for secondary elements */
+    --secondary-foreground: 210 40% 98%;    /* Light text on secondary */
 
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
+    /* Muted colors - dark theme */
+    --muted: 217.2 32.6% 17.5%;             /* Darker muted background */
+    --muted-foreground: 215 20.2% 65.1%;    /* Medium gray text */
 
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
+    /* Accent colors - dark theme */
+    --accent: 217.2 32.6% 17.5%;            /* Dark accent background */
+    --accent-foreground: 210 40% 98%;       /* Light text on accent */
 
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
+    /* Error state - dark theme */
+    --destructive: 0 62.8% 30.6%;           /* Darker red for errors */
+    --destructive-foreground: 210 40% 98%;  /* Light text on error background */
 
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    /* UI elements - dark theme */
+    --border: 217.2 32.6% 17.5%;            /* Dark borders */
+    --input: 217.2 32.6% 17.5%;             /* Dark input backgrounds */
+    --ring: 212.7 26.8% 83.9%;              /* Light focus rings */
+    /* Sidebar colors - dark theme */
+    --sidebar-background: 240 5.9% 10%;         /* Very dark sidebar background */
+    --sidebar-foreground: 240 4.8% 95.9%;       /* Light sidebar text */
+    --sidebar-primary: 224.3 76.3% 48%;         /* Bright blue for active items */
+    --sidebar-primary-foreground: 0 0% 100%;    /* White text on active */
+    --sidebar-accent: 240 3.7% 15.9%;           /* Slightly lighter for hover */
+    --sidebar-accent-foreground: 240 4.8% 95.9%; /* Light text on hover */
+    --sidebar-border: 240 3.7% 15.9%;           /* Dark sidebar borders */
+    --sidebar-ring: 217.2 91.2% 59.8%;          /* Bright focus ring */
   }
 }
 
+/* =========================================================================
+   BASE STYLES
+   =========================================================================
+   
+   Global styles applied to all elements.
+   These ensure consistent theming across the entire application.
+   ========================================================================= */
+
 @layer base {
+  /* Apply border color token to all elements */
   * {
     @apply border-border;
   }
 
+  /* Set base page styling using semantic tokens */
   body {
     @apply bg-background text-foreground;
   }
