@@ -34,7 +34,7 @@ export const Navigation = ({ currentView, onViewChange }: NavigationProps) => {
           {/* LOGO SECTION - Left side of navigation */}
           <div className="flex items-center space-x-2">
             <Hammer className="h-8 w-8 text-primary" /> {/* Hammer icon using primary color */}
-            <span className="text-xl font-bold text-foreground">TaskBridge</span> {/* App name */}
+            <span className="text-xl font-bold text-foreground">HomeConnect</span> {/* App name */}
           </div>
 
           {/* DESKTOP NAVIGATION - Only visible on medium screens and up (hidden on mobile) */}
