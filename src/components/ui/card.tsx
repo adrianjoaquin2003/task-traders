@@ -2,6 +2,42 @@ import * as React from "react"
 
 import { cn } from "@/lib/utils"
 
+/* =========================================================================
+   CARD COMPONENTS
+   =========================================================================
+   
+   A set of composable components for building content cards.
+   Cards provide a flexible foundation for displaying grouped content.
+   
+   COMPONENTS:
+   - Card: The main container with border and background
+   - CardHeader: Top section for titles and actions
+   - CardFooter: Bottom section for actions or additional info
+   - CardTitle: Primary heading within card header
+   - CardDescription: Subtitle or description text
+   - CardContent: Main content area with proper spacing
+   
+   USAGE EXAMPLE:
+   <Card>
+     <CardHeader>
+       <CardTitle>Card Title</CardTitle>
+       <CardDescription>Card description goes here</CardDescription>
+     </CardHeader>
+     <CardContent>
+       <p>Main content...</p>
+     </CardContent>
+     <CardFooter>
+       <Button>Action</Button>
+     </CardFooter>
+   </Card>
+   
+   STYLING:
+   - Uses semantic color tokens for theming
+   - Consistent spacing and typography
+   - Responsive and accessible by default
+   ========================================================================= */
+
+/* Main card container with border, background, and shadow */
 const Card = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
@@ -17,6 +53,7 @@ const Card = React.forwardRef<
 ))
 Card.displayName = "Card"
 
+/* Card header section - typically contains title and description */
 const CardHeader = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
@@ -29,6 +66,7 @@ const CardHeader = React.forwardRef<
 ))
 CardHeader.displayName = "CardHeader"
 
+/* Card title - primary heading with proper typography */
 const CardTitle = React.forwardRef<
   HTMLParagraphElement,
   React.HTMLAttributes<HTMLHeadingElement>
@@ -44,6 +82,7 @@ const CardTitle = React.forwardRef<
 ))
 CardTitle.displayName = "CardTitle"
 
+/* Card description - subtitle text with muted styling */
 const CardDescription = React.forwardRef<
   HTMLParagraphElement,
   React.HTMLAttributes<HTMLParagraphElement>
@@ -56,6 +95,7 @@ const CardDescription = React.forwardRef<
 ))
 CardDescription.displayName = "CardDescription"
 
+/* Card content - main content area with consistent padding */
 const CardContent = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
@@ -64,6 +104,7 @@ const CardContent = React.forwardRef<
 ))
 CardContent.displayName = "CardContent"
 
+/* Card footer - bottom section for actions or additional info */
 const CardFooter = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>

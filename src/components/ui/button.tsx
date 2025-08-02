@@ -4,6 +4,39 @@ import { cva, type VariantProps } from "class-variance-authority"
 
 import { cn } from "@/lib/utils"
 
+/* =========================================================================
+   BUTTON COMPONENT
+   =========================================================================
+   
+   A flexible button component with multiple variants and sizes.
+   Built using class-variance-authority for type-safe styling variants.
+   
+   USAGE EXAMPLES:
+   - <Button>Default button</Button>
+   - <Button variant="secondary" size="lg">Large secondary</Button>
+   - <Button variant="outline" disabled>Disabled outline</Button>
+   - <Button asChild><Link to="/page">Link as button</Link></Button>
+   
+   VARIANTS:
+   - default: Primary brand button with solid background
+   - destructive: Red button for dangerous actions
+   - outline: Bordered button with transparent background
+   - secondary: Subtle button with light background
+   - ghost: Minimal button with no background
+   - link: Text-only button styled like a link
+   - hero: Special variant for hero sections
+   - accent: Golden accent button for highlights
+   - success: Green button for positive actions
+   
+   SIZES:
+   - default: Standard button size (h-10 px-4 py-2)
+   - sm: Small button (h-9 px-3)
+   - lg: Large button (h-11 px-8)
+   - xl: Extra large button (h-12 px-12)
+   - icon: Square button for icons only (h-10 w-10)
+   ========================================================================= */
+
+/* Button variant and size definitions using class-variance-authority */
 const buttonVariants = cva(
   "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
   {
@@ -37,12 +70,14 @@ const buttonVariants = cva(
   }
 )
 
+/* Button component props interface */
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
   asChild?: boolean
 }
 
+/* Main Button component with forwardRef for proper DOM ref handling */
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, asChild = false, ...props }, ref) => {
     const Comp = asChild ? Slot : "button"
