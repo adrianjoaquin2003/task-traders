@@ -3,12 +3,15 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Hammer, Users, Shield, Star, ArrowRight, Wrench, Paintbrush, Zap, Home, CheckCircle } from 'lucide-react';
 import heroImage from '@/assets/hero-home-services.jpg';
+import { useJobs } from '@/hooks/useJobs';
 
 interface HomePageProps {
   onViewChange: (view: string) => void;
 }
 
 export const HomePage = ({ onViewChange }: HomePageProps) => {
+  const { data: jobs = [] } = useJobs();
+  
   const features = [
     {
       icon: Users,
@@ -22,15 +25,26 @@ export const HomePage = ({ onViewChange }: HomePageProps) => {
     }
   ];
 
+  // Calculate active jobs by category
+  const getActiveJobsCount = (categoryName: string) => {
+    return jobs.filter(job => 
+      job.status === 'open' && 
+      job.category.toLowerCase().includes(categoryName.toLowerCase())
+    ).length;
+  };
+
   const serviceCategories = [
-    { icon: Paintbrush, name: "Painting", jobs: 0 },
-    { icon: Wrench, name: "Plumbing", jobs: 0 },
-    { icon: Zap, name: "Electrical", jobs: 0 },
-    { icon: Home, name: "General Maintenance", jobs: 0 }
+    { icon: Paintbrush, name: "Painting", jobs: getActiveJobsCount("painting") },
+    { icon: Wrench, name: "Plumbing", jobs: getActiveJobsCount("plumbing") },
+    { icon: Zap, name: "Electrical", jobs: getActiveJobsCount("electrical") },
+    { icon: Home, name: "General Maintenance", jobs: getActiveJobsCount("maintenance") }
   ];
 
-  // Recent jobs will be fetched from the database
-  const recentJobs: any[] = [];
+  // Get recent jobs from the database (last 3 open jobs)
+  const recentJobs = jobs
+    .filter(job => job.status === 'open')
+    .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
+    .slice(0, 3);
 
   return (
     <div className="min-h-screen bg-background">
@@ -141,14 +155,18 @@ export const HomePage = ({ onViewChange }: HomePageProps) => {
                       <CardTitle className="text-lg">{job.title}</CardTitle>
                       <p className="text-sm text-muted-foreground mt-1">{job.location}</p>
                     </div>
-                    <Badge variant="secondary">{job.bids} bids</Badge>
+                    <Badge variant="secondary">{job.category}</Badge>
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-muted-foreground mb-4">{job.description}</p>
+                  <p className="text-muted-foreground mb-4">{job.description.length > 100 ? job.description.substring(0, 100) + '...' : job.description}</p>
                   <div className="flex justify-between items-center">
-                    <span className="font-semibold text-primary">{job.budget}</span>
-                    <span className="text-sm text-muted-foreground">{job.timePosted}</span>
+                    <span className="font-semibold text-primary">
+                      ${(job.budget_min / 100).toLocaleString()} - ${(job.budget_max / 100).toLocaleString()}
+                    </span>
+                    <span className="text-sm text-muted-foreground">
+                      {new Date(job.created_at).toLocaleDateString()}
+                    </span>
                   </div>
                 </CardContent>
               </Card>
