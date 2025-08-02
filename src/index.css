@@ -285,6 +285,24 @@
     animation: tropical-float 35s linear infinite;
   }
 
+  /* ===== ANIMATED GRADIENTS ===== */
+  .animated-gradient {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .animated-gradient::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, transparent 40%, hsl(var(--primary) / 0.15) 50%, transparent 60%);
+    animation: gentle-wave 6s ease-in-out infinite;
+    pointer-events: none;
+  }
+
   /* ===== KEYFRAME ANIMATIONS ===== */
   @keyframes gentle-wave {
     0%, 100% { transform: translateX(-50px) scaleX(1); }
