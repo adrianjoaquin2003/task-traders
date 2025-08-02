@@ -311,8 +311,8 @@
 
   /* ===== KEYFRAME ANIMATIONS ===== */
   @keyframes gentle-wave {
-    0%, 100% { transform: translateX(-50px) scaleX(1); }
-    50% { transform: translateX(50px) scaleX(1.1); }
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
   }
   
   @keyframes palm-sway {
