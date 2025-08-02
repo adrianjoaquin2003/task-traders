@@ -49,7 +49,7 @@ export const HomePage = ({ onViewChange }: HomePageProps) => {
     .slice(0, 3);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-secondary/30 to-background">
+    <div className="min-h-screen bg-background">
       {/* Hero Section */}
       <section className="relative py-20 lg:py-32 overflow-hidden">
         <div 
@@ -86,7 +86,7 @@ export const HomePage = ({ onViewChange }: HomePageProps) => {
       <div className="wave-divider"></div>
 
       {/* Features Section */}
-      <section className="py-16 bg-white/40 backdrop-blur-sm relative">
+      <section className="py-16 bg-secondary/50 relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-foreground mb-4">Why Choose Bermuda HomeConnect?</h2>
@@ -145,7 +145,7 @@ export const HomePage = ({ onViewChange }: HomePageProps) => {
       <div className="wave-divider"></div>
 
       {/* Recent Jobs */}
-      <section className="py-16 bg-white/40 backdrop-blur-sm relative">
+      <section className="py-16 bg-secondary/50 relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="flex justify-between items-center mb-12">
             <div>

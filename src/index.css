@@ -68,12 +68,11 @@
     --input: 195 25% 85%;                   /* Input field borders */
     --ring: 195 85% 55%;                    /* Focus ring matches primary */
 
-    /* ===== ENHANCED BERMUDA GRADIENTS ===== */
+    /* ===== BERMUDA-INSPIRED DESIGN EFFECTS ===== */
     
-    /* Main page gradient - tropical ocean fade */
+    /* Gradient definitions - tropical ocean and sunset vibes */
     --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-glow)));
     --gradient-hero: linear-gradient(135deg, hsl(195 85% 55%), hsl(15 85% 65%)); /* Ocean to coral sunset */
-    --gradient-page: linear-gradient(135deg, hsl(var(--background)), hsl(var(--secondary) / 0.4), hsl(var(--primary) / 0.08), hsl(var(--background)));
     
     /* Shadow definitions - soft tropical shadows */
     --shadow-elegant: 0 10px 30px -10px hsl(var(--primary) / 0.25);
@@ -174,12 +173,9 @@
     @apply border-border;
   }
 
-  /* Set base page styling with gradient background */
+  /* Set base page styling using semantic tokens */
   body {
-    @apply text-foreground;
-    background: linear-gradient(135deg, hsl(var(--background)), hsl(var(--secondary) / 0.3), hsl(var(--primary) / 0.05), hsl(var(--background)));
-    background-attachment: fixed;
-    min-height: 100vh;
+    @apply bg-background text-foreground;
   }
 }
 
