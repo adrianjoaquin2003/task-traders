@@ -162,7 +162,10 @@ export const HomePage = ({ onViewChange }: HomePageProps) => {
                   <p className="text-muted-foreground mb-4">{job.description.length > 100 ? job.description.substring(0, 100) + '...' : job.description}</p>
                   <div className="flex justify-between items-center">
                     <span className="font-semibold text-primary">
-                      ${(job.budget_min / 100).toLocaleString()} - ${(job.budget_max / 100).toLocaleString()}
+                      {job.budget_max && job.budget_max > 0 ? 
+                        `$${(job.budget_min / 100).toLocaleString()} - $${(job.budget_max / 100).toLocaleString()}` : 
+                        `$${(job.budget_min / 100).toLocaleString()}+`
+                      }
                     </span>
                     <span className="text-sm text-muted-foreground">
                       {new Date(job.created_at).toLocaleDateString()}
