@@ -26,80 +26,80 @@
      LIGHT THEME (DEFAULT)
      ===================================================================== */
   :root {
-    /* Base page colors */
-    --background: 0 0% 100%;                /* Main page background - pure white */
-    --foreground: 222.2 84% 4.9%;           /* Main text color - very dark blue */
+    /* Base page colors - Bermuda light theme */
+    --background: 0 0% 99%;                 /* Crisp white like Bermuda limestone buildings */
+    --foreground: 210 15% 20%;              /* Deep ocean blue-gray text */
 
     /* Card component colors */
-    --card: 0 0% 100%;                      /* Card background - white */
-    --card-foreground: 222.2 84% 4.9%;     /* Card text color - dark blue */
+    --card: 0 0% 100%;                      /* Pure white cards */
+    --card-foreground: 210 15% 20%;         /* Deep text on cards */
 
     /* Popover/dropdown colors */
-    --popover: 0 0% 100%;                   /* Popover background - white */
-    --popover-foreground: 222.2 84% 4.9%;  /* Popover text - dark blue */
+    --popover: 0 0% 100%;                   /* Clean white popovers */
+    --popover-foreground: 210 15% 20%;      /* Deep text in popovers */
 
-    /* Primary brand colors */
-    --primary: 220 100% 50%;                /* Main brand color - bright blue */
-    --primary-foreground: 0 0% 100%;        /* Text on primary background - white */
-    --primary-glow: 220 100% 60%;           /* Lighter variant of primary for effects */
+    /* Primary brand colors - Bermuda ocean blue */
+    --primary: 195 85% 55%;                 /* Beautiful turquoise like Bermuda waters */
+    --primary-foreground: 0 0% 100%;        /* White text on ocean blue */
+    --primary-glow: 195 85% 65%;            /* Lighter turquoise for effects */
 
-    /* Secondary colors */
-    --secondary: 220 15% 96%;               /* Light gray background for secondary elements */
-    --secondary-foreground: 220 20% 20%;    /* Dark text on secondary background */
+    /* Secondary colors - Bermuda pink sand */
+    --secondary: 15 45% 92%;                /* Soft pink like Bermuda's famous pink sand */
+    --secondary-foreground: 345 25% 35%;    /* Deep coral text on pink background */
 
-    /* Muted colors for less prominent elements */
-    --muted: 220 15% 96%;                   /* Subtle background color */
-    --muted-foreground: 220 10% 45%;        /* Muted text color for secondary info */
+    /* Muted colors - Sandy/beige tones */
+    --muted: 30 20% 95%;                    /* Warm sandy background */
+    --muted-foreground: 210 15% 45%;        /* Muted ocean blue text */
 
-    /* Accent colors for highlights */
-    --accent: 45 100% 50%;                  /* Golden yellow accent color */
-    --accent-foreground: 0 0% 100%;         /* White text on accent background */
+    /* Accent colors - Tropical coral */
+    --accent: 15 85% 65%;                   /* Vibrant coral like Bermuda sunsets */
+    --accent-foreground: 0 0% 100%;         /* White text on coral */
 
-    /* Success state colors */
-    --success: 120 60% 45%;                 /* Green for success messages */
-    --success-foreground: 0 0% 100%;        /* White text on success background */
+    /* Success state colors - Tropical green */
+    --success: 155 65% 45%;                 /* Palm tree green */
+    --success-foreground: 0 0% 100%;        /* White text on green */
 
     /* Error/destructive state colors */
-    --destructive: 0 84.2% 60.2%;           /* Red for errors and destructive actions */
-    --destructive-foreground: 210 40% 98%;  /* Light text on destructive background */
+    --destructive: 0 84% 60%;               /* Bright red for errors */
+    --destructive-foreground: 0 0% 98%;     /* Light text on red */
 
     /* UI element colors */
-    --border: 220 15% 90%;                  /* Border color for inputs, cards, etc. */
-    --input: 220 15% 90%;                   /* Input field background/border */
-    --ring: 220 100% 50%;                   /* Focus ring color (matches primary) */
+    --border: 195 25% 85%;                  /* Soft ocean-inspired borders */
+    --input: 195 25% 85%;                   /* Input field borders */
+    --ring: 195 85% 55%;                    /* Focus ring matches primary */
 
-    /* ===== DESIGN EFFECTS ===== */
+    /* ===== BERMUDA-INSPIRED DESIGN EFFECTS ===== */
     
-    /* Gradient definitions - use with bg-gradient-primary class */
+    /* Gradient definitions - tropical ocean and sunset vibes */
     --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-glow)));
-    --gradient-hero: linear-gradient(135deg, hsl(220 100% 50%), hsl(260 100% 60%));
+    --gradient-hero: linear-gradient(135deg, hsl(195 85% 55%), hsl(15 85% 65%)); /* Ocean to coral sunset */
     
-    /* Shadow definitions - use with shadow-elegant class */
-    --shadow-elegant: 0 10px 30px -10px hsl(var(--primary) / 0.2);
+    /* Shadow definitions - soft tropical shadows */
+    --shadow-elegant: 0 10px 30px -10px hsl(var(--primary) / 0.25);
     
-    /* Animation timing - use with transition-smooth class */
+    /* Animation timing - smooth like ocean waves */
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
-    /* Border radius for consistent rounded corners */
-    --radius: 0.5rem;
+    /* Border radius for Bermuda's soft, coastal aesthetic */
+    --radius: 0.75rem;
 
-    /* ===== SIDEBAR COMPONENT COLORS ===== */
+    /* ===== SIDEBAR COMPONENT COLORS - BERMUDA THEME ===== */
     
     /* Sidebar background and text */
-    --sidebar-background: 0 0% 98%;         /* Very light gray sidebar background */
-    --sidebar-foreground: 240 5.3% 26.1%;  /* Dark text on sidebar */
+    --sidebar-background: 30 20% 97%;        /* Very light sandy background */
+    --sidebar-foreground: 210 15% 25%;       /* Ocean blue text */
 
     /* Sidebar active/primary state */
-    --sidebar-primary: 240 5.9% 10%;              /* Very dark for active items */
-    --sidebar-primary-foreground: 0 0% 98%;       /* Light text on active items */
+    --sidebar-primary: 195 85% 55%;              /* Turquoise for active items */
+    --sidebar-primary-foreground: 0 0% 100%;     /* White text on turquoise */
 
     /* Sidebar hover/accent state */
-    --sidebar-accent: 240 4.8% 95.9%;             /* Light hover background */
-    --sidebar-accent-foreground: 240 5.9% 10%;    /* Dark text on hover */
+    --sidebar-accent: 195 35% 90%;               /* Light ocean blue hover */
+    --sidebar-accent-foreground: 210 15% 25%;    /* Ocean blue text on hover */
 
     /* Sidebar borders and focus */
-    --sidebar-border: 220 13% 91%;          /* Sidebar border color */
-    --sidebar-ring: 217.2 91.2% 59.8%;     /* Focus ring for sidebar elements */
+    --sidebar-border: 195 25% 85%;          /* Soft ocean borders */
+    --sidebar-ring: 195 85% 55%;            /* Turquoise focus ring */
   }
 
   /* =====================================================================
@@ -110,51 +110,52 @@
      Colors are inverted and adjusted for dark backgrounds.
      ===================================================================== */
   .dark {
-    /* Base page colors - dark theme */
-    --background: 222.2 84% 4.9%;           /* Very dark blue background */
-    --foreground: 210 40% 98%;              /* Very light text */
+    /* Base page colors - Bermuda dark theme (evening ocean vibes) */
+    --background: 210 25% 8%;               /* Deep ocean blue night */
+    --foreground: 195 15% 92%;              /* Light sandy text */
 
     /* Card component colors - dark theme */
-    --card: 222.2 84% 4.9%;                 /* Dark card background */
-    --card-foreground: 210 40% 98%;         /* Light card text */
+    --card: 210 20% 12%;                    /* Dark ocean card background */
+    --card-foreground: 195 15% 92%;         /* Light card text */
 
     /* Popover/dropdown colors - dark theme */
-    --popover: 222.2 84% 4.9%;              /* Dark popover background */
-    --popover-foreground: 210 40% 98%;      /* Light popover text */
+    --popover: 210 20% 12%;                 /* Dark popover background */
+    --popover-foreground: 195 15% 92%;      /* Light popover text */
 
-    /* Primary brand colors - dark theme (inverted) */
-    --primary: 210 40% 98%;                 /* Light primary color */
-    --primary-foreground: 222.2 47.4% 11.2%; /* Dark text on light primary */
+    /* Primary brand colors - dark theme (glowing coral) */
+    --primary: 15 85% 65%;                  /* Coral/pink like sunset */
+    --primary-foreground: 210 25% 8%;       /* Dark text on coral */
 
     /* Secondary colors - dark theme */
-    --secondary: 217.2 32.6% 17.5%;         /* Dark gray for secondary elements */
-    --secondary-foreground: 210 40% 98%;    /* Light text on secondary */
+    --secondary: 210 15% 18%;               /* Dark ocean gray */
+    --secondary-foreground: 195 15% 85%;    /* Light text on secondary */
 
     /* Muted colors - dark theme */
-    --muted: 217.2 32.6% 17.5%;             /* Darker muted background */
-    --muted-foreground: 215 20.2% 65.1%;    /* Medium gray text */
+    --muted: 210 15% 18%;                   /* Darker muted background */
+    --muted-foreground: 195 10% 65%;        /* Medium light text */
 
     /* Accent colors - dark theme */
-    --accent: 217.2 32.6% 17.5%;            /* Dark accent background */
-    --accent-foreground: 210 40% 98%;       /* Light text on accent */
+    --accent: 195 85% 60%;                  /* Bright turquoise accent */
+    --accent-foreground: 210 25% 8%;        /* Dark text on turquoise */
 
     /* Error state - dark theme */
-    --destructive: 0 62.8% 30.6%;           /* Darker red for errors */
-    --destructive-foreground: 210 40% 98%;  /* Light text on error background */
+    --destructive: 0 65% 55%;               /* Softer red for dark theme */
+    --destructive-foreground: 195 15% 92%;  /* Light text on error */
 
     /* UI elements - dark theme */
-    --border: 217.2 32.6% 17.5%;            /* Dark borders */
-    --input: 217.2 32.6% 17.5%;             /* Dark input backgrounds */
-    --ring: 212.7 26.8% 83.9%;              /* Light focus rings */
-    /* Sidebar colors - dark theme */
-    --sidebar-background: 240 5.9% 10%;         /* Very dark sidebar background */
-    --sidebar-foreground: 240 4.8% 95.9%;       /* Light sidebar text */
-    --sidebar-primary: 224.3 76.3% 48%;         /* Bright blue for active items */
-    --sidebar-primary-foreground: 0 0% 100%;    /* White text on active */
-    --sidebar-accent: 240 3.7% 15.9%;           /* Slightly lighter for hover */
-    --sidebar-accent-foreground: 240 4.8% 95.9%; /* Light text on hover */
-    --sidebar-border: 240 3.7% 15.9%;           /* Dark sidebar borders */
-    --sidebar-ring: 217.2 91.2% 59.8%;          /* Bright focus ring */
+    --border: 210 15% 20%;                  /* Dark borders */
+    --input: 210 15% 20%;                   /* Dark input backgrounds */
+    --ring: 15 85% 65%;                     /* Coral focus rings */
+
+    /* Sidebar colors - dark theme (deep ocean night) */
+    --sidebar-background: 210 20% 10%;          /* Deep ocean sidebar */
+    --sidebar-foreground: 195 15% 85%;          /* Light sandy text */
+    --sidebar-primary: 15 85% 65%;              /* Coral for active items */
+    --sidebar-primary-foreground: 210 25% 8%;   /* Dark text on coral */
+    --sidebar-accent: 210 15% 18%;              /* Slightly lighter for hover */
+    --sidebar-accent-foreground: 195 15% 85%;   /* Light text on hover */
+    --sidebar-border: 210 15% 20%;              /* Dark sidebar borders */
+    --sidebar-ring: 15 85% 65%;                 /* Coral focus ring */
   }
 }
 
