@@ -184,7 +184,6 @@ export const HomePage = ({ onViewChange }: HomePageProps) => {
           Purpose: Creates visual flow between sections while maintaining theme
           Effect: Subtle gradient with animated wave overlay for movement
       */}
-      <div className="wave-divider"></div>
 
       {/* ===============================================================================
           FEATURES SECTION - Platform value propositions
@@ -199,7 +198,7 @@ export const HomePage = ({ onViewChange }: HomePageProps) => {
           - Hover effects with coral glow and border transitions
           - Professional certification and climate expertise messaging
       */}
-      <section className="bg-gradient-hero coral-glow wave-hover">
+      <section className="wave-divider">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           {/* Section header with compelling headline and supporting text */}
           <div className="text-center mb-12">
