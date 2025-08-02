@@ -188,7 +188,7 @@ export const HomePage = ({ onViewChange }: HomePageProps) => {
                 <Button size="lg" variant="accent" onClick={() => onViewChange('post-job')}>
                   Post Your First Job
                 </Button>
-                <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-primary" onClick={() => onViewChange('professionals')}>
+                <Button size="lg" variant="outline" className="border-white text-black hover:bg-white hover:text-primary" onClick={() => onViewChange('professionals')}>
                   Browse Professionals
                 </Button>
               </div>
