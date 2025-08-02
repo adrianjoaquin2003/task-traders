@@ -294,8 +294,6 @@ export const HomePage = ({ onViewChange }: HomePageProps) => {
           - Animated gradient overlay with gentle wave motion for movement
       */}
       <section className="py-16 relative overflow-hidden">
-        {/* Animated gradient overlay for subtle movement effect */}
-        <div className="absolute inset-0 bg-gradient-to-br from-transparent via-primary/10 to-transparent animate-[gentle-wave_4s_ease-in-out_infinite]"></div>
         
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           {/* Section header with CTA button for easy navigation */}
