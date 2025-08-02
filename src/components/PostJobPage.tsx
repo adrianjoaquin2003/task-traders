@@ -202,7 +202,7 @@ export const PostJobPage = ({ onViewChange }: PostJobPageProps) => {
                   </SelectTrigger>
                   <SelectContent>
                     {categories.map((category) => (
-                      <SelectItem key={category} value={category.toLowerCase().replace(' ', '-')}>
+                      <SelectItem key={category} value={category.toLowerCase()}>
                         {category}
                       </SelectItem>
                     ))}
