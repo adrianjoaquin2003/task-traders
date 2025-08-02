@@ -27,7 +27,7 @@
      ===================================================================== */
   :root {
     /* Base page colors - Bermuda light theme */
-    --background: 0 0% 99%;                 /* Crisp white like Bermuda limestone buildings */
+    --background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-glow)));              /* Crisp white like Bermuda limestone buildings */
     --foreground: 210 15% 20%;              /* Deep ocean blue-gray text */
 
     /* Card component colors */
