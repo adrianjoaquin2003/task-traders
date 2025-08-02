@@ -113,7 +113,8 @@ export default {
 			/* Custom gradient backgrounds from CSS variables */
 			backgroundImage: {
 				'gradient-primary': 'var(--gradient-primary)',  /* Primary brand gradient */
-				'gradient-hero': 'var(--gradient-hero)'         /* Hero section gradient */
+				'gradient-hero': 'var(--gradient-hero)',         /* Hero section gradient */
+				'gradient-page': 'var(--gradient-page)'          /* Full page background gradient */
 			},
 			
 			/* Custom shadow effects */
