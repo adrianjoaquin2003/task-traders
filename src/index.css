@@ -298,7 +298,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(45deg, transparent 20%, hsl(var(--primary) / 0.6) 40%, hsl(var(--accent) / 0.8) 50%, hsl(var(--primary) / 0.6) 60%, transparent 80%);
+    background: linear-gradient(45deg, transparent 25%, hsl(var(--primary) / 0.35) 40%, hsl(var(--accent) / 0.4) 50%, hsl(var(--primary) / 0.35) 60%, transparent 75%);
     animation: gentle-wave 6s ease-in-out infinite;
     pointer-events: none;
     z-index: 1;
