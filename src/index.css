@@ -176,7 +176,7 @@
   /* Set base page styling using semantic tokens with wave background */
   body {
     @apply text-foreground;
-    background: linear-gradient(135deg, hsl(var(--secondary)), hsl(var(--background)));
+    background: hsl(var(--secondary));
     position: relative;
     overflow-x: hidden;
   }
