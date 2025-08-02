@@ -15,13 +15,13 @@ export const HomePage = ({ onViewChange }: HomePageProps) => {
   const features = [
     {
       icon: Users,
-      title: "Island-Certified Professionals",
+      title: "Bermuda-Certified Professionals",
       description: "All contractors are background-checked, insured, and experienced with Bermuda's unique building requirements."
     },
     {
       icon: Star,
       title: "Hurricane & Saltwater Ready",
-      description: "Our experts understand Bermuda's climate challenges and use materials built for island life."
+      description: "Our experts understand Bermuda's climate challenges and use materials built for coastal living."
     }
   ];
 
@@ -63,7 +63,7 @@ export const HomePage = ({ onViewChange }: HomePageProps) => {
           <div className="text-center">
             <h1 className="text-4xl lg:text-6xl font-bold text-white mb-6">
               Connect with Bermuda's
-              <span className="block text-accent">Island Home Experts 🏝️</span>
+              <span className="block text-accent">Home Service Experts</span>
             </h1>
             <p className="text-xl text-white/90 mb-8 max-w-3xl mx-auto">
               From Hamilton to St. George's - post your home project and get competitive bids from verified local professionals. 
@@ -71,11 +71,11 @@ export const HomePage = ({ onViewChange }: HomePageProps) => {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button size="xl" variant="accent" className="coral-glow wave-hover" onClick={() => onViewChange('post-job')}>
-                Post Your Island Project 🌺
+                Post Your Project
                 <ArrowRight className="h-5 w-5" />
               </Button>
               <Button size="xl" variant="outline" className="border-white text-black hover:bg-white hover:text-primary transition-all duration-500" onClick={() => onViewChange('browse-jobs')}>
-                Browse Island Jobs
+                Browse Jobs
               </Button>
             </div>
           </div>
@@ -87,12 +87,11 @@ export const HomePage = ({ onViewChange }: HomePageProps) => {
 
       {/* Features Section */}
       <section className="py-16 bg-secondary/50 relative">
-        <div className="absolute inset-0 coral-reef-pattern opacity-5"></div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-foreground mb-4">Why Choose Bermuda HomeConnect? 🌊</h2>
+            <h2 className="text-3xl font-bold text-foreground mb-4">Why Choose Bermuda HomeConnect?</h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              We understand island living - connecting homeowners with professionals who know Bermuda inside and out
+              We understand coastal living - connecting homeowners with professionals who know Bermuda inside and out
             </p>
           </div>
           
@@ -122,7 +121,7 @@ export const HomePage = ({ onViewChange }: HomePageProps) => {
         <div className="absolute inset-0 tropical-pattern opacity-5"></div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-foreground mb-4">Island Services 🏖️</h2>
+            <h2 className="text-3xl font-bold text-foreground mb-4">Bermuda Services</h2>
             <p className="text-muted-foreground">Specialized services for Bermuda homes and businesses</p>
           </div>
           
@@ -147,15 +146,14 @@ export const HomePage = ({ onViewChange }: HomePageProps) => {
 
       {/* Recent Jobs */}
       <section className="py-16 bg-secondary/50 relative">
-        <div className="absolute inset-0 coral-reef-pattern opacity-5"></div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="flex justify-between items-center mb-12">
             <div>
-              <h2 className="text-3xl font-bold text-foreground mb-4">Recent Island Projects 🏡</h2>
+              <h2 className="text-3xl font-bold text-foreground mb-4">Recent Local Projects</h2>
               <p className="text-muted-foreground">See what Bermuda homeowners are looking for</p>
             </div>
             <Button variant="outline" className="coral-glow-subtle hover:coral-glow transition-all duration-300" onClick={() => onViewChange('browse-jobs')}>
-              View All Island Jobs 🌊
+              View All Jobs
               <ArrowRight className="h-4 w-4" />
             </Button>
           </div>
@@ -202,16 +200,16 @@ export const HomePage = ({ onViewChange }: HomePageProps) => {
           <Card className="bg-gradient-hero text-white border-0 coral-glow overflow-hidden relative">
             <div className="absolute inset-0 tropical-overlay opacity-10"></div>
             <CardContent className="p-12 text-center relative">
-              <h2 className="text-3xl font-bold mb-4">Ready to Start Your Island Project? 🏝️</h2>
+              <h2 className="text-3xl font-bold mb-4">Ready to Start Your Project?</h2>
               <p className="text-xl mb-8 opacity-90">
                 Join hundreds of Bermuda homeowners and professionals using HomeConnect
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button size="lg" variant="accent" className="coral-glow wave-hover" onClick={() => onViewChange('post-job')}>
-                  Post Your First Island Project 🌺
+                  Post Your First Project
                 </Button>
                 <Button size="lg" variant="outline" className="border-white text-black hover:bg-white hover:text-primary transition-all duration-500" onClick={() => onViewChange('professionals')}>
-                  Browse Island Professionals
+                  Browse Professionals
                 </Button>
               </div>
             </CardContent>
