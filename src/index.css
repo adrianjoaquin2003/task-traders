@@ -232,7 +232,7 @@
 
   /* ===== WAVE DIVIDERS ===== */
   .wave-divider {
-    background: linear-gradient(135deg, hsl(var(--secondary)), hsl(var(--background)));
+    background: hsl(var(--background));
     position: relative;
     overflow: hidden;
   }
@@ -250,7 +250,7 @@
   
   .wave-divider-reverse {
     height: 60px;
-    background: linear-gradient(135deg, hsl(var(--background)), hsl(var(--secondary)));
+    background: hsl(var(--background));
     position: relative;
     overflow: hidden;
     transform: rotate(180deg);
