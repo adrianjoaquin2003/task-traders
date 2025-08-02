@@ -117,7 +117,7 @@ export const HomePage = ({ onViewChange }: HomePageProps) => {
     .slice(0, 3);
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="wave-divider">
       {/* ===============================================================================
           HERO SECTION - Primary landing area with value proposition
           ===============================================================================
