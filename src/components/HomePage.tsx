@@ -56,8 +56,8 @@ export const HomePage = ({ onViewChange }: HomePageProps) => {
     },
     {
       icon: Star,
-      title: "Hurricane & Saltwater Ready",
-      description: "Our experts understand Bermuda's climate challenges and use materials built for coastal living."
+      title: "Wide Variety of Services",
+      description: "Our experts offer a wide variety of home maintenance and development services across various trades disciplines"
     }
   ];
 
@@ -204,7 +204,7 @@ export const HomePage = ({ onViewChange }: HomePageProps) => {
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-foreground mb-4">Why Choose Bermuda HomeConnect?</h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              We understand coastal living - connecting homeowners with professionals who know Bermuda inside and out
+              A platform made by Bermudians for Bermudians - connecting homeowners with professionals who know Bermuda inside and out
             </p>
           </div>
           
@@ -250,7 +250,7 @@ export const HomePage = ({ onViewChange }: HomePageProps) => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           {/* Section header emphasizing Bermuda specialization */}
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-foreground mb-4">Bermuda Services</h2>
+            <h2 className="text-3xl font-bold text-foreground mb-4">Services</h2>
             <p className="text-muted-foreground">Specialized services for Bermuda homes and businesses</p>
           </div>
           
