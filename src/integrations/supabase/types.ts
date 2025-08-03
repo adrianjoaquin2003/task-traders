@@ -17,7 +17,13 @@ export type Database = {
       bids: {
         Row: {
           amount: number
+          bank_account_number: string | null
+          bidder_email: string | null
+          bidder_name: string | null
+          bidder_phone: string | null
           created_at: string
+          estimated_hours: number | null
+          hourly_rate: number | null
           id: string
           job_id: string
           message: string | null
@@ -28,7 +34,13 @@ export type Database = {
         }
         Insert: {
           amount: number
+          bank_account_number?: string | null
+          bidder_email?: string | null
+          bidder_name?: string | null
+          bidder_phone?: string | null
           created_at?: string
+          estimated_hours?: number | null
+          hourly_rate?: number | null
           id?: string
           job_id: string
           message?: string | null
@@ -39,7 +51,13 @@ export type Database = {
         }
         Update: {
           amount?: number
+          bank_account_number?: string | null
+          bidder_email?: string | null
+          bidder_name?: string | null
+          bidder_phone?: string | null
           created_at?: string
+          estimated_hours?: number | null
+          hourly_rate?: number | null
           id?: string
           job_id?: string
           message?: string | null
