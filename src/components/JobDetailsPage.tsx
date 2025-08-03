@@ -1,100 +1,137 @@
+// ==============================================
+// JOB DETAILS PAGE COMPONENT
+// ==============================================
+// This component displays comprehensive information about a specific job
+// including all details and submitted bids from professionals
+
+// REACT IMPORTS
 import React, { useEffect, useState } from "react";
+
+// ICON IMPORTS - Various icons for different sections
 import { ArrowLeft, MapPin, Calendar, DollarSign, User, Clock, Mail, Phone } from "lucide-react";
+
+// UI COMPONENT IMPORTS
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
+
+// SUPABASE CLIENT - For fetching job and bid data
 import { supabase } from "@/integrations/supabase/client";
 
+// COMPONENT PROPS INTERFACE
 interface JobDetailsPageProps {
-  jobId: string;
-  onViewChange: (view: string) => void;
+  jobId: string;                              // ID of the job to display
+  onViewChange: (view: string) => void;       // Function to navigate between pages
 }
 
+// JOB DATA INTERFACE
+// Defines the structure of job data from the database
 interface Job {
-  id: string;
-  title: string;
-  description: string;
-  location: string;
-  category: string;
-  budget_min?: number;
-  budget_max?: number;
-  budget_type: string;
-  timeline?: string;
-  status: string;
-  homeowner_name: string;
-  homeowner_verified: boolean;
-  created_at: string;
+  id: string;                    // Unique job identifier
+  title: string;                 // Job title
+  description: string;           // Detailed job description
+  location: string;              // Job location
+  category: string;              // Job category (plumbing, electrical, etc.)
+  budget_min?: number;           // Optional minimum budget
+  budget_max?: number;           // Optional maximum budget
+  budget_type: string;           // "range" or "fixed"
+  timeline?: string;             // Optional timeline information
+  status: string;                // Job status (open, closed, etc.)
+  homeowner_name: string;        // Name of person who posted the job
+  homeowner_verified: boolean;   // Whether homeowner is verified
+  created_at: string;            // When the job was posted
 }
 
+// BID DATA INTERFACE
+// Defines the structure of bid data from the database
 interface Bid {
-  id: string;
-  amount: number;
-  bidder_name?: string;
-  bidder_email?: string;
-  bidder_phone?: string;
-  hourly_rate?: number;
-  estimated_hours?: number;
-  message?: string;
-  status: string;
-  created_at: string;
+  id: string;                    // Unique bid identifier
+  amount: number;                // Total bid amount
+  bidder_name?: string;          // Optional bidder name
+  bidder_email?: string;         // Optional contact email
+  bidder_phone?: string;         // Optional contact phone
+  hourly_rate?: number;          // Optional hourly rate
+  estimated_hours?: number;      // Optional estimated hours
+  message?: string;              // Optional message from bidder
+  status: string;                // Bid status (pending, accepted, rejected)
+  created_at: string;            // When the bid was submitted
 }
 
+// MAIN COMPONENT FUNCTION
 const JobDetailsPage: React.FC<JobDetailsPageProps> = ({ jobId, onViewChange }) => {
-  const [job, setJob] = useState<Job | null>(null);
-  const [bids, setBids] = useState<Bid[]>([]);
-  const [loading, setLoading] = useState(true);
+  // STATE VARIABLES
+  const [job, setJob] = useState<Job | null>(null);      // Stores job details, null initially
+  const [bids, setBids] = useState<Bid[]>([]);           // Stores array of bids for this job
+  const [loading, setLoading] = useState(true);          // Tracks if data is still loading
 
+  // EFFECT HOOK - Runs when component mounts or jobId changes
+  // This automatically fetches fresh data whenever we view a different job
   useEffect(() => {
-    fetchJobDetails();
-    fetchBids();
-  }, [jobId]);
+    fetchJobDetails();  // Get the job information
+    fetchBids();        // Get all bids for this job
+  }, [jobId]); // Dependencies: re-run if jobId changes
 
+  // FETCH JOB DETAILS FUNCTION
+  // Retrieves job information from the database
   const fetchJobDetails = async () => {
     try {
+      // QUERY DATABASE for job with matching ID
       const { data, error } = await supabase
-        .from("jobs")
-        .select("*")
-        .eq("id", jobId)
-        .single();
+        .from("jobs")              // From the jobs table
+        .select("*")               // Select all columns
+        .eq("id", jobId)           // Where id equals our jobId
+        .single();                 // Expect only one result
 
-      if (error) throw error;
-      setJob(data);
+      if (error) throw error;      // Handle any database errors
+      setJob(data);                // Store the job data in state
     } catch (error) {
       console.error("Error fetching job details:", error);
+      // Note: We don't set loading to false here because fetchBids() will do it
     }
   };
 
+  // FETCH BIDS FUNCTION
+  // Retrieves all bids submitted for this job
   const fetchBids = async () => {
     try {
+      // QUERY DATABASE for all bids for this job
       const { data, error } = await supabase
-        .from("bids")
-        .select("*")
-        .eq("job_id", jobId)
-        .order("created_at", { ascending: false });
+        .from("bids")                                    // From the bids table
+        .select("*")                                     // Select all columns
+        .eq("job_id", jobId)                            // Where job_id matches our jobId
+        .order("created_at", { ascending: false });     // Order by newest first
 
-      if (error) throw error;
-      setBids(data || []);
+      if (error) throw error;       // Handle any database errors
+      setBids(data || []);          // Store bids in state, use empty array if null
     } catch (error) {
       console.error("Error fetching bids:", error);
     } finally {
+      // ALWAYS SET LOADING TO FALSE
+      // This runs whether the fetch succeeded or failed
       setLoading(false);
     }
   };
 
+  // UTILITY FUNCTIONS FOR FORMATTING DATA
+
+  // FORMAT DATE FUNCTION
+  // Converts database date string to readable format like "January 15, 2024"
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
+      year: "numeric",     // Show full year
+      month: "long",       // Show full month name
+      day: "numeric",      // Show day number
     });
   };
 
+  // FORMAT BUDGET FUNCTION
+  // Displays budget information in a user-friendly way
   const formatBudget = (min?: number, max?: number, type?: string) => {
-    if (!min && !max) return "Budget not specified";
-    if (type === "fixed" && min) return `$${min.toLocaleString()}`;
-    if (min && max) return `$${min.toLocaleString()} - $${max.toLocaleString()}`;
-    return `$${(min || max)?.toLocaleString()}`;
+    if (!min && !max) return "Budget not specified";                           // No budget info
+    if (type === "fixed" && min) return `$${min.toLocaleString()}`;            // Fixed budget
+    if (min && max) return `$${min.toLocaleString()} - $${max.toLocaleString()}`; // Budget range
+    return `$${(min || max)?.toLocaleString()}`;                               // Single value (min or max)
   };
 
   if (loading) {
