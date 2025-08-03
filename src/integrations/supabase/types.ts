@@ -31,6 +31,7 @@ export type Database = {
           status: string | null
           timeline: string | null
           updated_at: string
+          user_id: string | null
         }
         Insert: {
           amount: number
@@ -48,6 +49,7 @@ export type Database = {
           status?: string | null
           timeline?: string | null
           updated_at?: string
+          user_id?: string | null
         }
         Update: {
           amount?: number
@@ -65,6 +67,7 @@ export type Database = {
           status?: string | null
           timeline?: string | null
           updated_at?: string
+          user_id?: string | null
         }
         Relationships: [
           {
@@ -79,6 +82,41 @@ export type Database = {
             columns: ["professional_id"]
             isOneToOne: false
             referencedRelation: "professionals"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      conversations: {
+        Row: {
+          created_at: string
+          id: string
+          job_id: string
+          job_poster_id: string
+          last_message_at: string | null
+          professional_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          job_id: string
+          job_poster_id: string
+          last_message_at?: string | null
+          professional_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          job_id?: string
+          job_poster_id?: string
+          last_message_at?: string | null
+          professional_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "conversations_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "jobs"
             referencedColumns: ["id"]
           },
         ]
@@ -100,6 +138,7 @@ export type Database = {
           timeline: string | null
           title: string
           updated_at: string
+          user_id: string | null
         }
         Insert: {
           budget_max?: number | null
@@ -117,6 +156,7 @@ export type Database = {
           timeline?: string | null
           title: string
           updated_at?: string
+          user_id?: string | null
         }
         Update: {
           budget_max?: number | null
@@ -134,8 +174,60 @@ export type Database = {
           timeline?: string | null
           title?: string
           updated_at?: string
+          user_id?: string | null
         }
         Relationships: []
+      }
+      messages: {
+        Row: {
+          content: string
+          conversation_id: string | null
+          created_at: string
+          id: string
+          job_id: string
+          read_at: string | null
+          recipient_id: string
+          sender_id: string
+          updated_at: string
+        }
+        Insert: {
+          content: string
+          conversation_id?: string | null
+          created_at?: string
+          id?: string
+          job_id: string
+          read_at?: string | null
+          recipient_id: string
+          sender_id: string
+          updated_at?: string
+        }
+        Update: {
+          content?: string
+          conversation_id?: string | null
+          created_at?: string
+          id?: string
+          job_id?: string
+          read_at?: string | null
+          recipient_id?: string
+          sender_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "messages_conversation_id_fkey"
+            columns: ["conversation_id"]
+            isOneToOne: false
+            referencedRelation: "conversations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "messages_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "jobs"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       professionals: {
         Row: {
@@ -200,6 +292,39 @@ export type Database = {
           updated_at?: string
           user_id?: string | null
           verified?: boolean | null
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          email: string
+          full_name: string | null
+          id: string
+          phone: string | null
+          role: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          full_name?: string | null
+          id?: string
+          phone?: string | null
+          role: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          full_name?: string | null
+          id?: string
+          phone?: string | null
+          role?: string
+          updated_at?: string
+          user_id?: string
         }
         Relationships: []
       }

@@ -9,6 +9,8 @@ import { BrowseJobsPage } from '@/components/BrowseJobsPage';  // List of availa
 import { ProfessionalsPage } from '@/components/ProfessionalsPage';  // List of professionals
 import SubmitBidPage from '@/components/SubmitBidPage';  // Form to submit bids
 import JobDetailsPage from '@/components/JobDetailsPage';  // Job details and bids view
+import AuthPage from '@/components/AuthPage';  // Authentication page
+import { useAuth } from '@/hooks/useAuth';  // Authentication hook
 
 // MAIN INDEX COMPONENT - This acts like a "single page app" controller
 // Instead of multiple HTML pages, we show different React components
@@ -19,6 +21,21 @@ const Index = () => {
   const [currentView, setCurrentView] = useState('home');
   const [selectedJobId, setSelectedJobId] = useState<string | null>(null);
   const [selectedJob, setSelectedJob] = useState<any>(null);
+  
+  // Authentication state
+  const { loading } = useAuth();
+
+  // Show loading screen while checking authentication
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-muted-foreground">Loading...</p>
+        </div>
+      </div>
+    );
+  }
 
   // Custom view change handler to manage job-related navigation
   const handleViewChange = (view: string, jobData?: any) => {
@@ -67,6 +84,9 @@ const Index = () => {
             <p>Job not found</p>
           </div>
         );
+      case 'auth':
+        // Show authentication page
+        return <AuthPage onViewChange={handleViewChange} />;
       default:
         // If currentView doesn't match anything above, show home page
         return <HomePage onViewChange={handleViewChange} />;

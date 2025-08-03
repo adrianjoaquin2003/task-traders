@@ -28,6 +28,7 @@ import heroImage from '@/assets/hero-home-services.jpg';
 
 // Custom hooks for data fetching
 import { useJobs } from '@/hooks/useJobs';
+import { useAuth } from '@/hooks/useAuth';
 
 /**
  * Props interface for HomePage component
@@ -38,6 +39,7 @@ interface HomePageProps {
 }
 
 export const HomePage = ({ onViewChange }: HomePageProps) => {
+  const { isAuthenticated, isJobPoster, isProfessional } = useAuth();
   // Fetch all jobs data using React Query for caching and optimistic updates
   // Default to empty array to prevent rendering errors during loading state
   const { data: jobs = [] } = useJobs();
@@ -160,18 +162,39 @@ export const HomePage = ({ onViewChange }: HomePageProps) => {
               Hurricane prep, saltwater repairs, limestone restoration, and more.
             </p>
             
-            {/* Primary and secondary CTA buttons with responsive stacking */}
+            {/* Role-based CTA buttons with responsive stacking */}
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              {/* Primary CTA - Post job (main user action) with coral glow effect */}
-              <Button size="xl" variant="accent" className="coral-glow wave-hover" onClick={() => onViewChange('post-job')}>
-                Post Your Project
-                <ArrowRight className="h-5 w-5" />
-              </Button>
-              
-              {/* Secondary CTA - Browse jobs (alternative entry point) */}
-              <Button size="xl" variant="outline" className="border-white text-black hover:bg-white hover:text-primary transition-all duration-500" onClick={() => onViewChange('browse-jobs')}>
-                Browse Jobs
-              </Button>
+              {!isAuthenticated ? (
+                <>
+                  <Button size="xl" variant="accent" className="coral-glow wave-hover" onClick={() => onViewChange('auth')}>
+                    Get Started
+                    <ArrowRight className="h-5 w-5" />
+                  </Button>
+                  <Button size="xl" variant="outline" className="border-white text-black hover:bg-white hover:text-primary transition-all duration-500" onClick={() => onViewChange('browse-jobs')}>
+                    Browse Jobs
+                  </Button>
+                </>
+              ) : isJobPoster ? (
+                <>
+                  <Button size="xl" variant="accent" className="coral-glow wave-hover" onClick={() => onViewChange('post-job')}>
+                    Post Your Project
+                    <ArrowRight className="h-5 w-5" />
+                  </Button>
+                  <Button size="xl" variant="outline" className="border-white text-black hover:bg-white hover:text-primary transition-all duration-500" onClick={() => onViewChange('professionals')}>
+                    Find Professionals
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Button size="xl" variant="accent" className="coral-glow wave-hover" onClick={() => onViewChange('browse-jobs')}>
+                    Find Work
+                    <ArrowRight className="h-5 w-5" />
+                  </Button>
+                  <Button size="xl" variant="outline" className="border-white text-black hover:bg-white hover:text-primary transition-all duration-500" onClick={() => onViewChange('professionals')}>
+                    View Professionals
+                  </Button>
+                </>
+              )}
             </div>
           </div>
         </div>

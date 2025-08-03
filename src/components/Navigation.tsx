@@ -1,7 +1,8 @@
 // IMPORT REACT HOOK AND UI COMPONENTS
 import { useState } from 'react';  // For managing mobile menu open/closed state
 import { Button } from '@/components/ui/button';  // Reusable button component
-import { Menu, X, Hammer, User, Plus } from 'lucide-react';  // Icons from Lucide library
+import { Menu, X, Hammer, User, Plus, LogIn, LogOut } from 'lucide-react';  // Icons from Lucide library
+import { useAuth } from '@/hooks/useAuth';  // Authentication hook
 
 // INTERFACE - Defines what props this component expects
 interface NavigationProps {
@@ -12,18 +13,40 @@ interface NavigationProps {
 // NAVIGATION COMPONENT - The top navigation bar
 // Props are passed in as function parameters using destructuring
 export const Navigation = ({ currentView, onViewChange }: NavigationProps) => {
+  const { isAuthenticated, profile, signOut, isJobPoster, isProfessional } = useAuth();
   // STATE FOR MOBILE MENU - tracks whether mobile menu is open or closed
   // useState(false) means menu starts closed
   const [isOpen, setIsOpen] = useState(false);
 
-  // NAVIGATION ITEMS - Array of objects defining our menu items
-  // Each object has an id (matches view name), display label, and optional icon
-  const navItems = [
-    { id: 'home', label: 'Home', icon: null },              // Home page, no icon
-    { id: 'browse-jobs', label: 'Browse Jobs', icon: null }, // Job listings, no icon
-    { id: 'post-job', label: 'Post a Job', icon: Plus },     // Job posting form, plus icon
-    { id: 'professionals', label: 'Find Pros', icon: User }, // Professional listings, user icon
-  ];
+  // DYNAMIC NAVIGATION ITEMS - Based on user role and authentication status
+  const getNavItems = () => {
+    const baseItems = [
+      { id: 'home', label: 'Home', icon: null }
+    ];
+
+    if (isAuthenticated) {
+      if (isProfessional) {
+        // Professional users can browse and bid on jobs
+        baseItems.push({ id: 'browse-jobs', label: 'Browse Jobs', icon: null });
+      } else if (isJobPoster) {
+        // Job posters can view professionals and post jobs
+        baseItems.push(
+          { id: 'professionals', label: 'Find Pros', icon: User },
+          { id: 'post-job', label: 'Post a Job', icon: Plus }
+        );
+      }
+    } else {
+      // Non-authenticated users can browse both
+      baseItems.push(
+        { id: 'browse-jobs', label: 'Browse Jobs', icon: null },
+        { id: 'professionals', label: 'Find Pros', icon: User }
+      );
+    }
+
+    return baseItems;
+  };
+
+  const navItems = getNavItems();
 
   // RENDER THE NAVIGATION BAR - This is the JSX that creates the HTML structure
   return (
@@ -33,8 +56,8 @@ export const Navigation = ({ currentView, onViewChange }: NavigationProps) => {
           
           {/* LOGO SECTION - Left side of navigation */}
           <div className="flex items-center space-x-2">
-            <Hammer className="h-8 w-8 text-primary" /> {/* Hammer icon using primary color */}
-            <span className="text-xl font-bold text-foreground">HomeConnect</span> {/* App name */}
+            <Hammer className="h-8 w-8 text-primary" />
+            <span className="text-xl font-bold text-foreground">JobConnect</span>
           </div>
 
           {/* DESKTOP NAVIGATION - Only visible on medium screens and up (hidden on mobile) */}
@@ -57,14 +80,35 @@ export const Navigation = ({ currentView, onViewChange }: NavigationProps) => {
             ))}
           </div>
 
-          {/* CTA BUTTONS - Call-to-action buttons on the right (desktop only) */}
+          {/* AUTHENTICATION SECTION - Right side of navigation */}
           <div className="hidden md:flex items-center space-x-4">
-            <Button variant="outline" onClick={() => onViewChange('login')}>
-              Sign In
-            </Button>
-            <Button variant="hero" onClick={() => onViewChange('post-job')}>
-              Post a Job
-            </Button>
+            {isAuthenticated ? (
+              <>
+                {/* User Profile Info */}
+                <div className="flex items-center space-x-2 text-sm">
+                  <User className="h-4 w-4" />
+                  <span>{profile?.full_name || profile?.email}</span>
+                  <span className="text-xs bg-primary/10 text-primary px-2 py-1 rounded-full">
+                    {profile?.role === 'job_poster' ? 'Job Poster' : 'Professional'}
+                  </span>
+                </div>
+                
+                {/* Sign Out Button */}
+                <Button variant="outline" onClick={signOut}>
+                  <LogOut className="h-4 w-4 mr-2" />
+                  Sign Out
+                </Button>
+              </>
+            ) : (
+              /* Sign In Button for non-authenticated users */
+              <Button
+                variant={currentView === "auth" ? "default" : "outline"}
+                onClick={() => onViewChange("auth")}
+              >
+                <LogIn className="h-4 w-4 mr-2" />
+                Sign In
+              </Button>
+            )}
           </div>
 
           {/* MOBILE MENU BUTTON - Only visible on small screens */}
@@ -102,14 +146,24 @@ export const Navigation = ({ currentView, onViewChange }: NavigationProps) => {
                 </button>
               ))}
               
-              {/* MOBILE CTA BUTTONS - Sign in and Post Job buttons for mobile */}
+              {/* MOBILE AUTHENTICATION BUTTONS */}
               <div className="flex flex-col space-y-2 pt-4">
-                <Button variant="outline" onClick={() => onViewChange('login')}>
-                  Sign In
-                </Button>
-                <Button variant="hero" onClick={() => onViewChange('post-job')}>
-                  Post a Job
-                </Button>
+                {isAuthenticated ? (
+                  <>
+                    <div className="px-3 py-2 text-sm text-muted-foreground">
+                      {profile?.full_name} ({profile?.role === 'job_poster' ? 'Job Poster' : 'Professional'})
+                    </div>
+                    <Button variant="outline" onClick={signOut}>
+                      <LogOut className="h-4 w-4 mr-2" />
+                      Sign Out
+                    </Button>
+                  </>
+                ) : (
+                  <Button variant="outline" onClick={() => onViewChange('auth')}>
+                    <LogIn className="h-4 w-4 mr-2" />
+                    Sign In
+                  </Button>
+                )}
               </div>
             </div>
           </div>
