@@ -8,7 +8,7 @@ import { ArrowLeft, Search, MapPin, DollarSign, Clock, Users, Filter } from 'luc
 import { useJobs } from '@/hooks/useJobs';
 
 interface BrowseJobsPageProps {
-  onViewChange: (view: string) => void;
+  onViewChange: (view: string, jobData?: any) => void;
 }
 
 export const BrowseJobsPage = ({ onViewChange }: BrowseJobsPageProps) => {
@@ -54,8 +54,12 @@ export const BrowseJobsPage = ({ onViewChange }: BrowseJobsPageProps) => {
     return matchesSearch && matchesCategory && matchesLocation;
   });
 
-  const handleBidClick = (jobId: string | number) => {
-    onViewChange(`bid-${jobId}`);
+  const handleBidClick = (job: any) => {
+    onViewChange(`bid-${job.id}`, job);
+  };
+
+  const handleJobDetailsClick = (jobId: string) => {
+    onViewChange(`job-details-${jobId}`);
   };
 
   return (
@@ -192,12 +196,16 @@ export const BrowseJobsPage = ({ onViewChange }: BrowseJobsPageProps) => {
                     <span><strong>Posted by:</strong> {job.homeowner_name}</span>
                   </div>
                   <div className="flex gap-2">
-                    <Button variant="outline" size="sm">
+                    <Button 
+                      variant="outline" 
+                      size="sm"
+                      onClick={() => handleJobDetailsClick(job.id)}
+                    >
                       View Details
                     </Button>
                     <Button 
                       size="sm" 
-                      onClick={() => handleBidClick(job.id)}
+                      onClick={() => handleBidClick(job)}
                     >
                       Submit Bid
                     </Button>
