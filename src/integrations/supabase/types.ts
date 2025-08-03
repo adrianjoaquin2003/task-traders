@@ -27,7 +27,7 @@ export type Database = {
           id: string
           job_id: string
           message: string | null
-          professional_id: string
+          professional_id: string | null
           status: string | null
           timeline: string | null
           updated_at: string
@@ -44,7 +44,7 @@ export type Database = {
           id?: string
           job_id: string
           message?: string | null
-          professional_id: string
+          professional_id?: string | null
           status?: string | null
           timeline?: string | null
           updated_at?: string
@@ -61,7 +61,7 @@ export type Database = {
           id?: string
           job_id?: string
           message?: string | null
-          professional_id?: string
+          professional_id?: string | null
           status?: string | null
           timeline?: string | null
           updated_at?: string
