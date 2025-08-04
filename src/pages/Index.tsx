@@ -1,5 +1,6 @@
-// IMPORT REACT HOOK - useState lets us store and change data in our component
-import { useState } from 'react';
+// IMPORT REACT HOOKS - useState for state, useEffect for side effects, useNavigate for navigation
+import { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 // IMPORT OUR PAGE COMPONENTS - Each represents a different screen/page
 import { Navigation } from '@/components/Navigation';  // Top navigation bar
@@ -16,15 +17,29 @@ import { useAuth } from '@/hooks/useAuth';  // Authentication hook
 // MAIN INDEX COMPONENT - This acts like a "single page app" controller
 // Instead of multiple HTML pages, we show different React components
 const Index = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  
   // STATE VARIABLE - Tracks which page/view the user is currently on
-  // useState('home') means we start on the home page
-  // currentView = current value, setCurrentView = function to change it
+  // Parse from URL or default to 'home'
   const [currentView, setCurrentView] = useState('home');
   const [selectedJobId, setSelectedJobId] = useState<string | null>(null);
   const [selectedJob, setSelectedJob] = useState<any>(null);
   
   // Authentication state
   const { loading } = useAuth();
+
+  // Parse URL parameters and set initial view
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+    const view = searchParams.get('view') || 'home';
+    const jobId = searchParams.get('jobId');
+    
+    setCurrentView(view);
+    if (jobId) {
+      setSelectedJobId(jobId);
+    }
+  }, [location.search]);
 
   // Show loading screen while checking authentication
   if (loading) {
@@ -40,21 +55,37 @@ const Index = () => {
 
   // Custom view change handler to manage job-related navigation
   const handleViewChange = (view: string, jobData?: any) => {
+    const searchParams = new URLSearchParams();
+    
     if (view.startsWith('bid-')) {
       const jobId = view.replace('bid-', '');
       setSelectedJobId(jobId);
       setSelectedJob(jobData);
       setCurrentView('submit-bid');
+      searchParams.set('view', 'submit-bid');
+      searchParams.set('jobId', jobId);
     } else if (view.startsWith('job-details-')) {
       const jobId = view.replace('job-details-', '');
       setSelectedJobId(jobId);
       setCurrentView('job-details');
+      searchParams.set('view', 'job-details');
+      searchParams.set('jobId', jobId);
     } else if (view === 'job-details' && jobData?.jobId) {
       setSelectedJobId(jobData.jobId);
       setCurrentView('job-details');
+      searchParams.set('view', 'job-details');
+      searchParams.set('jobId', jobData.jobId);
     } else {
       setCurrentView(view);
+      if (view !== 'home') {
+        searchParams.set('view', view);
+      }
     }
+    
+    // Update URL with new parameters
+    const newSearch = searchParams.toString();
+    const newUrl = newSearch ? `?${newSearch}` : '/';
+    navigate(newUrl, { replace: false });
   };
 
   // FUNCTION TO DECIDE WHICH PAGE TO SHOW - Based on currentView state
