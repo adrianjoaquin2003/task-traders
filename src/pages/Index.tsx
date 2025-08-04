@@ -10,6 +10,7 @@ import { ProfessionalsPage } from '@/components/ProfessionalsPage';  // List of 
 import SubmitBidPage from '@/components/SubmitBidPage';  // Form to submit bids
 import JobDetailsPage from '@/components/JobDetailsPage';  // Job details and bids view
 import AuthPage from '@/components/AuthPage';  // Authentication page
+import MyJobsPage from '@/components/MyJobsPage';  // Job poster's job management page
 import { useAuth } from '@/hooks/useAuth';  // Authentication hook
 
 // MAIN INDEX COMPONENT - This acts like a "single page app" controller
@@ -48,6 +49,9 @@ const Index = () => {
       const jobId = view.replace('job-details-', '');
       setSelectedJobId(jobId);
       setCurrentView('job-details');
+    } else if (view === 'job-details' && jobData?.jobId) {
+      setSelectedJobId(jobData.jobId);
+      setCurrentView('job-details');
     } else {
       setCurrentView(view);
     }
@@ -66,6 +70,9 @@ const Index = () => {
       case 'professionals':
         // Show list of professionals
         return <ProfessionalsPage onViewChange={handleViewChange} />;
+      case 'my-jobs':
+        // Show job poster's job management page
+        return <MyJobsPage onViewChange={handleViewChange} />;
       case 'submit-bid':
         // Show bid submission form
         return selectedJob ? (

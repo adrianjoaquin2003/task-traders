@@ -176,12 +176,12 @@ export const HomePage = ({ onViewChange }: HomePageProps) => {
                 </>
               ) : isJobPoster ? (
                 <>
-                  <Button size="xl" variant="accent" className="coral-glow wave-hover" onClick={() => onViewChange('post-job')}>
-                    Post Your Project
+                  <Button size="xl" variant="accent" className="coral-glow wave-hover" onClick={() => onViewChange('my-jobs')}>
+                    Manage My Jobs
                     <ArrowRight className="h-5 w-5" />
                   </Button>
-                  <Button size="xl" variant="outline" className="border-white text-black hover:bg-white hover:text-primary transition-all duration-500" onClick={() => onViewChange('professionals')}>
-                    Find Professionals
+                  <Button size="xl" variant="outline" className="border-white text-black hover:bg-white hover:text-primary transition-all duration-500" onClick={() => onViewChange('post-job')}>
+                    Post New Project
                   </Button>
                 </>
               ) : (

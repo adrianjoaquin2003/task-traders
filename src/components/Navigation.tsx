@@ -31,6 +31,7 @@ export const Navigation = ({ currentView, onViewChange }: NavigationProps) => {
       } else if (isJobPoster) {
         // Job posters can view professionals and post jobs
         baseItems.push(
+          { id: 'my-jobs', label: 'My Jobs', icon: null },
           { id: 'professionals', label: 'Find Pros', icon: User },
           { id: 'post-job', label: 'Post a Job', icon: Plus }
         );

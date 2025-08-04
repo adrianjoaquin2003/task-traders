@@ -15,6 +15,9 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
+import ChatButton from "@/components/ChatButton";
+import { useAuth } from '@/hooks/useAuth';
+import { useToast } from '@/hooks/use-toast';
 
 // SUPABASE CLIENT - For fetching job and bid data
 import { supabase } from "@/integrations/supabase/client";
@@ -41,6 +44,7 @@ interface Job {
   homeowner_name: string;        // Name of person who posted the job
   homeowner_verified: boolean;   // Whether homeowner is verified
   created_at: string;            // When the job was posted
+  user_id?: string;              // ID of the user who posted the job
 }
 
 // BID DATA INTERFACE
@@ -48,6 +52,7 @@ interface Job {
 interface Bid {
   id: string;                    // Unique bid identifier
   amount: number;                // Total bid amount
+  professional_id?: string;      // ID of the professional who submitted the bid
   bidder_name?: string;          // Optional bidder name
   bidder_email?: string;         // Optional contact email
   bidder_phone?: string;         // Optional contact phone
@@ -60,6 +65,8 @@ interface Bid {
 
 // MAIN COMPONENT FUNCTION
 const JobDetailsPage: React.FC<JobDetailsPageProps> = ({ jobId, onViewChange }) => {
+  const { user, isJobPoster } = useAuth();
+  const { toast } = useToast();
   // STATE VARIABLES
   const [job, setJob] = useState<Job | null>(null);      // Stores job details, null initially
   const [bids, setBids] = useState<Bid[]>([]);           // Stores array of bids for this job
@@ -132,6 +139,60 @@ const JobDetailsPage: React.FC<JobDetailsPageProps> = ({ jobId, onViewChange }) 
     if (type === "fixed" && min) return `$${min.toLocaleString()}`;            // Fixed budget
     if (min && max) return `$${min.toLocaleString()} - $${max.toLocaleString()}`; // Budget range
     return `$${(min || max)?.toLocaleString()}`;                               // Single value (min or max)
+  };
+
+  const acceptBid = async (bidId: string) => {
+    if (!user || !isJobPoster) return;
+    
+    try {
+      // Update the accepted bid status
+      const { error: bidError } = await supabase
+        .from('bids')
+        .update({ status: 'accepted' })
+        .eq('id', bidId);
+
+      if (bidError) throw bidError;
+
+      // Reject all other bids for this job
+      const { error: rejectError } = await supabase
+        .from('bids')
+        .update({ status: 'rejected' })
+        .eq('job_id', jobId)
+        .neq('id', bidId);
+
+      if (rejectError) throw rejectError;
+
+      // Update job status to in-progress
+      const { error: jobError } = await supabase
+        .from('jobs')
+        .update({ status: 'in-progress' })
+        .eq('id', jobId);
+
+      if (jobError) throw jobError;
+
+      // Refresh data
+      fetchJobDetails();
+      fetchBids();
+
+      toast({
+        title: "Success",
+        description: "Bid accepted successfully!",
+      });
+    } catch (error) {
+      console.error('Error accepting bid:', error);
+      toast({
+        title: "Error",
+        description: "Failed to accept bid",
+        variant: "destructive"
+      });
+    }
+  };
+
+  const handleStartChat = (conversationId: string) => {
+    toast({
+      title: "Chat Started",
+      description: "Chat functionality will open here",
+    });
   };
 
   if (loading) {
@@ -271,20 +332,43 @@ const JobDetailsPage: React.FC<JobDetailsPageProps> = ({ jobId, onViewChange }) 
                               {bid.bidder_name || "Anonymous"}
                             </span>
                             <Badge 
-                              variant={bid.status === "pending" ? "outline" : "default"}
+                              variant={bid.status === "pending" ? "outline" : bid.status === "accepted" ? "default" : "destructive"}
                               className="text-xs"
                             >
                               {bid.status}
                             </Badge>
                           </div>
-                          <span className="font-bold text-primary">
-                            ${bid.amount.toLocaleString()}
-                          </span>
+                          <div className="flex items-center gap-2">
+                            <span className="font-bold text-primary">
+                              ${(bid.amount / 100).toLocaleString()}
+                            </span>
+                            {/* Action buttons for job poster */}
+                            {isJobPoster && job?.status === 'open' && bid.status === 'pending' && (
+                              <Button
+                                size="sm"
+                                onClick={() => acceptBid(bid.id)}
+                                className="ml-2"
+                              >
+                                Accept Bid
+                              </Button>
+                            )}
+                            {/* Chat button for communication */}
+                            {bid.professional_id && (
+                              <ChatButton
+                                jobId={jobId}
+                                jobPosterId={job?.user_id || ''}
+                                professionalId={bid.professional_id}
+                                onStartChat={handleStartChat}
+                                variant="ghost"
+                                size="sm"
+                              />
+                            )}
+                          </div>
                         </div>
 
                         {bid.hourly_rate && bid.estimated_hours && (
                           <div className="text-sm text-muted-foreground mb-2">
-                            ${bid.hourly_rate}/hr × {bid.estimated_hours} hours
+                            ${(bid.hourly_rate / 100).toLocaleString()}/hr × {bid.estimated_hours} hours
                           </div>
                         )}
 
