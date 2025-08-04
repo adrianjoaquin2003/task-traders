@@ -9,6 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Badge } from '@/components/ui/badge';  // Small status indicators
 import { ArrowLeft, MapPin, DollarSign, Calendar, CheckCircle } from 'lucide-react';  // Icons
 import { useCreateJob, NewJob } from '@/hooks/useJobs';  // Custom hook for creating jobs
+import { useAuth } from '@/hooks/useAuth';  // Authentication hook
 
 // INTERFACE - Defines props this component expects
 interface PostJobPageProps {
@@ -17,6 +18,7 @@ interface PostJobPageProps {
 
 // POST JOB PAGE COMPONENT - Form for creating new job posts
 export const PostJobPage = ({ onViewChange }: PostJobPageProps) => {
+  const { user, profile } = useAuth();
   // MUTATION HOOK - Handles creating jobs in the database
   // This gives us a function to call when user submits the form
   const createJobMutation = useCreateJob();
@@ -70,6 +72,12 @@ export const PostJobPage = ({ onViewChange }: PostJobPageProps) => {
     // Prevent default form submission (which would reload the page)
     e.preventDefault();
     
+    // Check if user is authenticated
+    if (!user) {
+      onViewChange('auth');
+      return;
+    }
+    
     // FORM VALIDATION - Check that required fields are filled
     if (!formData.title || !formData.description || !formData.category || !formData.budget || !formData.location) {
       return;  // Exit early if any required field is missing
@@ -118,8 +126,9 @@ export const PostJobPage = ({ onViewChange }: PostJobPageProps) => {
       budget_type: budgetRange?.includes('Hourly') ? 'hourly' : 'range',  // Budget type
       location: formData.location,
       timeline: formData.timeline,
-      homeowner_name: 'Anonymous User', // TODO: Replace with actual user name when auth is implemented
-      homeowner_verified: false  // TODO: Set based on actual user verification status
+      homeowner_name: profile?.full_name || profile?.email || 'User', // Use actual user name
+      homeowner_verified: false,  // TODO: Set based on actual user verification status
+      user_id: user.id  // Set the authenticated user's ID
     };
 
     // SUBMIT TO DATABASE - Call our mutation hook to create the job

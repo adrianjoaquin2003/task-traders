@@ -36,6 +36,7 @@ export interface NewJob {
   timeline?: string;                  // Optional: When work needs to be done
   homeowner_name: string;             // Required: Name of person posting job
   homeowner_verified?: boolean;       // Optional: Whether homeowner is verified
+  user_id: string;                    // Required: ID of authenticated user posting the job
 }
 
 // HOOK TO FETCH JOBS FROM DATABASE - This is a custom React hook
