@@ -326,7 +326,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      user_is_not_job_poster: {
+        Args: { bid_user_id: string; job_id: string }
+        Returns: boolean
+      }
     }
     Enums: {
       [_ in never]: never

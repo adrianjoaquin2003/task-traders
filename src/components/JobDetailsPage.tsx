@@ -71,6 +71,9 @@ const JobDetailsPage: React.FC<JobDetailsPageProps> = ({ jobId, onViewChange }) 
   const [job, setJob] = useState<Job | null>(null);      // Stores job details, null initially
   const [bids, setBids] = useState<Bid[]>([]);           // Stores array of bids for this job
   const [loading, setLoading] = useState(true);          // Tracks if data is still loading
+  
+  // Check if current user is the job poster
+  const isCurrentUserJobPoster = user && job && job.user_id === user.id;
 
   // EFFECT HOOK - Runs when component mounts or jobId changes
   // This automatically fetches fresh data whenever we view a different job
@@ -310,13 +313,22 @@ const JobDetailsPage: React.FC<JobDetailsPageProps> = ({ jobId, onViewChange }) 
 
             {/* Action buttons for bidding and communication */}
             <div className="mt-6 flex flex-col sm:flex-row gap-4">
-              {user && job.status === 'open' && (
+              {user && job.status === 'open' && !isCurrentUserJobPoster && (
                 <Button 
                   onClick={() => onViewChange('submit-bid', { jobId, job })}
                   className="flex-1"
                 >
                   Submit Bid
                 </Button>
+              )}
+              
+              {/* Message for job posters */}
+              {isCurrentUserJobPoster && (
+                <div className="flex-1 p-4 bg-muted rounded-lg text-center">
+                  <p className="text-sm text-muted-foreground">
+                    You cannot submit a bid on your own job posting
+                  </p>
+                </div>
               )}
               
               {/* General chat button - available for any communication */}
