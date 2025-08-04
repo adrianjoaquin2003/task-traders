@@ -25,7 +25,7 @@ import { supabase } from "@/integrations/supabase/client";
 // COMPONENT PROPS INTERFACE
 interface JobDetailsPageProps {
   jobId: string;                              // ID of the job to display
-  onViewChange: (view: string) => void;       // Function to navigate between pages
+  onViewChange: (view: string, data?: any) => void;       // Function to navigate between pages
 }
 
 // JOB DATA INTERFACE
@@ -307,6 +307,30 @@ const JobDetailsPage: React.FC<JobDetailsPageProps> = ({ jobId, onViewChange }) 
                 </div>
               </CardContent>
             </Card>
+
+            {/* Action buttons for bidding and communication */}
+            <div className="mt-6 flex flex-col sm:flex-row gap-4">
+              {user && job.status === 'open' && (
+                <Button 
+                  onClick={() => onViewChange('submit-bid', { jobId, job })}
+                  className="flex-1"
+                >
+                  Submit Bid
+                </Button>
+              )}
+              
+              {/* General chat button - available for any communication */}
+              {user && job.user_id && user.id !== job.user_id && (
+                <ChatButton
+                  jobId={jobId}
+                  jobPosterId={job.user_id}
+                  professionalId={user.id}
+                  onStartChat={handleStartChat}
+                  variant="outline"
+                  size="default"
+                />
+              )}
+            </div>
           </div>
 
           {/* Bids Section */}

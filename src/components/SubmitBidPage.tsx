@@ -19,6 +19,7 @@ import { Textarea } from "@/components/ui/textarea";
 
 // CUSTOM HOOKS - useToast for showing success/error messages
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/hooks/useAuth";
 
 // SUPABASE CLIENT - For database operations
 import { supabase } from "@/integrations/supabase/client";
@@ -39,6 +40,7 @@ interface SubmitBidPageProps {
 
 // MAIN COMPONENT FUNCTION
 const SubmitBidPage: React.FC<SubmitBidPageProps> = ({ job, onViewChange }) => {
+  const { user, profile } = useAuth();
   // TOAST HOOK - For showing success/error notifications
   const { toast } = useToast();
   
@@ -78,6 +80,18 @@ const SubmitBidPage: React.FC<SubmitBidPageProps> = ({ job, onViewChange }) => {
   // This function runs when the user clicks "Submit Bid"
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault(); // Prevent default form submission (page reload)
+    
+    // Check if user is authenticated
+    if (!user) {
+      toast({
+        title: "Authentication Required",
+        description: "Please sign in to submit a bid.",
+        variant: "destructive",
+      });
+      onViewChange('auth');
+      return;
+    }
+    
     setIsSubmitting(true); // Show loading state and disable submit button
 
     try {
@@ -90,12 +104,13 @@ const SubmitBidPage: React.FC<SubmitBidPageProps> = ({ job, onViewChange }) => {
         .from("bids")
         .insert({
           job_id: job.id,                                    // Link bid to specific job
-          professional_id: null,                             // Will be set when authentication is implemented
-          amount: total,                                     // Total calculated bid amount
+          professional_id: user.id,                          // Set authenticated user's ID
+          user_id: user.id,                                  // Also set user_id for consistency
+          amount: Math.round(total * 100),                   // Convert to cents for storage
           bidder_name: formData.bidder_name,                // Professional's name
           bidder_email: formData.bidder_email,              // Contact email
           bidder_phone: formData.bidder_phone,              // Contact phone
-          hourly_rate: parseInt(formData.hourly_rate),      // Convert string to integer
+          hourly_rate: Math.round(parseFloat(formData.hourly_rate) * 100), // Convert to cents
           estimated_hours: parseInt(formData.estimated_hours), // Convert string to integer
           bank_account_number: formData.bank_account_number, // Payment info
           message: formData.message,                         // Optional message
