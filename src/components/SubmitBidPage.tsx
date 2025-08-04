@@ -51,6 +51,7 @@ const SubmitBidPage: React.FC<SubmitBidPageProps> = ({ jobId, onViewChange }) =>
   // JOB STATE - Stores job details
   const [job, setJob] = useState<Job | null>(null);
   const [loading, setLoading] = useState(true);
+  const [existingBid, setExistingBid] = useState<any>(null);
   
   // SUBMISSION STATE - Prevents multiple submissions and shows loading state
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -67,19 +68,20 @@ const SubmitBidPage: React.FC<SubmitBidPageProps> = ({ jobId, onViewChange }) =>
     message: "",               // Optional message to the homeowner
   });
 
-  // FETCH JOB DATA
-  // Retrieves job details from database
-  const fetchJob = async () => {
+  // FETCH JOB DATA AND CHECK FOR EXISTING BIDS
+  // Retrieves job details from database and checks if user already submitted a bid
+  const fetchJobAndBids = async () => {
     try {
-      const { data, error } = await supabase
+      // Fetch job details
+      const { data: jobData, error: jobError } = await supabase
         .from("jobs")
         .select("*")
         .eq("id", jobId)
         .maybeSingle();
 
-      if (error) throw error;
+      if (jobError) throw jobError;
       
-      if (!data) {
+      if (!jobData) {
         toast({
           title: "Job not found",
           description: "The job you're trying to bid on doesn't exist.",
@@ -89,7 +91,24 @@ const SubmitBidPage: React.FC<SubmitBidPageProps> = ({ jobId, onViewChange }) =>
         return;
       }
       
-      setJob(data);
+      setJob(jobData);
+
+      // Check if user already has a bid for this job
+      if (user) {
+        const { data: bidData, error: bidError } = await supabase
+          .from("bids")
+          .select("*")
+          .eq("job_id", jobId)
+          .eq("professional_id", user.id)
+          .maybeSingle();
+
+        if (bidError && bidError.code !== 'PGRST116') { // PGRST116 is "no rows found" which is expected
+          console.error("Error checking existing bid:", bidError);
+        } else if (bidData) {
+          setExistingBid(bidData);
+        }
+      }
+      
     } catch (error) {
       console.error("Error fetching job:", error);
       toast({
@@ -105,8 +124,8 @@ const SubmitBidPage: React.FC<SubmitBidPageProps> = ({ jobId, onViewChange }) =>
 
   // FETCH DATA ON COMPONENT MOUNT
   useEffect(() => {
-    fetchJob();
-  }, [jobId]);
+    fetchJobAndBids();
+  }, [jobId, user]);
 
   // FORM INPUT HANDLER
   // This function runs every time the user types in any form field
@@ -178,14 +197,24 @@ const SubmitBidPage: React.FC<SubmitBidPageProps> = ({ jobId, onViewChange }) =>
       // NAVIGATE BACK TO JOB LISTINGS
       onViewChange("browse-jobs");
       
-    } catch (error) {
+    } catch (error: any) {
       // HANDLE ANY ERRORS
       console.error("Error submitting bid:", error);
-      toast({
-        title: "Error submitting bid",
-        description: "Please try again later.",
-        variant: "destructive", // Red error styling
-      });
+      
+      // Check if it's a duplicate bid error
+      if (error.message?.includes('duplicate key value violates unique constraint')) {
+        toast({
+          title: "Bid already submitted",
+          description: "You have already submitted a bid for this job. You can only submit one bid per job.",
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          title: "Error submitting bid",
+          description: "Please try again later.",
+          variant: "destructive",
+        });
+      }
     } finally {
       // ALWAYS RESET LOADING STATE
       // This runs whether the submission succeeded or failed
@@ -215,6 +244,68 @@ const SubmitBidPage: React.FC<SubmitBidPageProps> = ({ jobId, onViewChange }) =>
             <ArrowLeft className="h-4 w-4 mr-2" />
             Back to Jobs
           </Button>
+        </div>
+      </div>
+    );
+  }
+
+  // Show message if user already has a bid for this job
+  if (existingBid) {
+    return (
+      <div className="min-h-screen bg-background">
+        <div className="container mx-auto px-4 py-8">
+          <div className="flex items-center gap-2 mb-6">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => onViewChange("browse-jobs")}
+              className="text-foreground hover:text-primary"
+            >
+              <ArrowLeft className="h-4 w-4 mr-2" />
+              Back to Jobs
+            </Button>
+          </div>
+
+          <div className="max-w-2xl mx-auto">
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-2xl font-bold text-primary">
+                  Bid Already Submitted
+                </CardTitle>
+                <p className="text-muted-foreground">
+                  You have already submitted a bid for: {job.title}
+                </p>
+              </CardHeader>
+              <CardContent>
+                <div className="bg-muted p-4 rounded-lg mb-6">
+                  <h3 className="font-semibold mb-2">Your Current Bid:</h3>
+                  <p className="text-lg font-bold text-primary">
+                    ${(existingBid.amount / 100).toFixed(2)}
+                  </p>
+                  {existingBid.hourly_rate && existingBid.estimated_hours && (
+                    <p className="text-sm text-muted-foreground">
+                      ${(existingBid.hourly_rate / 100).toFixed(2)}/hour × {existingBid.estimated_hours} hours
+                    </p>
+                  )}
+                  <p className="text-sm text-muted-foreground mt-2">
+                    Status: <span className="capitalize">{existingBid.status}</span>
+                  </p>
+                  <p className="text-sm text-muted-foreground">
+                    Submitted: {new Date(existingBid.created_at).toLocaleDateString()}
+                  </p>
+                  {existingBid.message && (
+                    <div className="mt-3 pt-3 border-t">
+                      <p className="text-sm font-medium">Your message:</p>
+                      <p className="text-sm text-muted-foreground mt-1">"{existingBid.message}"</p>
+                    </div>
+                  )}
+                </div>
+                <p className="text-sm text-muted-foreground text-center">
+                  You can only submit one bid per job. To modify your bid, please contact the job poster directly.
+                </p>
+              </CardContent>
+            </Card>
+          </div>
         </div>
       </div>
     );
