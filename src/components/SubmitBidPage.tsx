@@ -5,7 +5,7 @@
 // It includes a form with bidder information, pricing, and messaging
 
 // REACT IMPORTS
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 // ICON IMPORTS - ArrowLeft for back navigation
 import { ArrowLeft } from "lucide-react";
@@ -27,22 +27,30 @@ import { supabase } from "@/integrations/supabase/client";
 // COMPONENT PROPS INTERFACE
 // Defines what data this component expects to receive from parent
 interface SubmitBidPageProps {
-  job: {
-    id: string;           // Unique job identifier
-    title: string;        // Job title to display
-    description: string;  // Job description
-    location: string;     // Job location
-    budget_min?: number;  // Optional minimum budget
-    budget_max?: number;  // Optional maximum budget
-  };
+  jobId: string;                      // Job ID to fetch and submit bid for
   onViewChange: (view: string) => void; // Function to navigate to different pages
 }
 
+// JOB INTERFACE
+// Defines the structure of job data
+interface Job {
+  id: string;
+  title: string;
+  description: string;
+  location: string;
+  budget_min?: number;
+  budget_max?: number;
+}
+
 // MAIN COMPONENT FUNCTION
-const SubmitBidPage: React.FC<SubmitBidPageProps> = ({ job, onViewChange }) => {
+const SubmitBidPage: React.FC<SubmitBidPageProps> = ({ jobId, onViewChange }) => {
   const { user, profile } = useAuth();
   // TOAST HOOK - For showing success/error notifications
   const { toast } = useToast();
+  
+  // JOB STATE - Stores job details
+  const [job, setJob] = useState<Job | null>(null);
+  const [loading, setLoading] = useState(true);
   
   // SUBMISSION STATE - Prevents multiple submissions and shows loading state
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -58,6 +66,47 @@ const SubmitBidPage: React.FC<SubmitBidPageProps> = ({ job, onViewChange }) => {
     bank_account_number: "",   // For payment processing
     message: "",               // Optional message to the homeowner
   });
+
+  // FETCH JOB DATA
+  // Retrieves job details from database
+  const fetchJob = async () => {
+    try {
+      const { data, error } = await supabase
+        .from("jobs")
+        .select("*")
+        .eq("id", jobId)
+        .maybeSingle();
+
+      if (error) throw error;
+      
+      if (!data) {
+        toast({
+          title: "Job not found",
+          description: "The job you're trying to bid on doesn't exist.",
+          variant: "destructive",
+        });
+        onViewChange("browse-jobs");
+        return;
+      }
+      
+      setJob(data);
+    } catch (error) {
+      console.error("Error fetching job:", error);
+      toast({
+        title: "Error loading job",
+        description: "Please try again later.",
+        variant: "destructive",
+      });
+      onViewChange("browse-jobs");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // FETCH DATA ON COMPONENT MOUNT
+  useEffect(() => {
+    fetchJob();
+  }, [jobId]);
 
   // FORM INPUT HANDLER
   // This function runs every time the user types in any form field
@@ -143,6 +192,33 @@ const SubmitBidPage: React.FC<SubmitBidPageProps> = ({ job, onViewChange }) => {
       setIsSubmitting(false);
     }
   };
+
+  // Show loading screen while fetching job data
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-muted-foreground">Loading job details...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Show error if job not found
+  if (!job) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-lg text-muted-foreground mb-4">Job not found</p>
+          <Button onClick={() => onViewChange("browse-jobs")}>
+            <ArrowLeft className="h-4 w-4 mr-2" />
+            Back to Jobs
+          </Button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background">

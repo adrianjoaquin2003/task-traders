@@ -106,11 +106,11 @@ const Index = () => {
         return <MyJobsPage onViewChange={handleViewChange} />;
       case 'submit-bid':
         // Show bid submission form
-        return selectedJob ? (
-          <SubmitBidPage job={selectedJob} onViewChange={handleViewChange} />
+        return selectedJobId ? (
+          <SubmitBidPage jobId={selectedJobId} onViewChange={handleViewChange} />
         ) : (
           <div className="min-h-screen bg-background flex items-center justify-center">
-            <p>Job not found</p>
+            <p>Job ID not found</p>
           </div>
         );
       case 'job-details':
