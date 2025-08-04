@@ -77,13 +77,6 @@ export type Database = {
             referencedRelation: "jobs"
             referencedColumns: ["id"]
           },
-          {
-            foreignKeyName: "bids_professional_id_fkey"
-            columns: ["professional_id"]
-            isOneToOne: false
-            referencedRelation: "professionals"
-            referencedColumns: ["id"]
-          },
         ]
       }
       conversations: {
