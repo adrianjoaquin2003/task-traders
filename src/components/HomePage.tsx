@@ -316,61 +316,62 @@ export const HomePage = ({ onViewChange }: HomePageProps) => {
           - Custom gradient from secondary to background colors
           - Animated gradient overlay with gentle wave motion for movement
       */}
-      <section className="py-16 relative overflow-hidden">
-        
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-          {/* Section header with CTA button for easy navigation */}
-          <div className="flex justify-between items-center mb-12">
-            <div>
-              <h2 className="text-3xl font-bold text-foreground mb-4">Recent Local Projects</h2>
-              <p className="text-muted-foreground">See what Bermuda homeowners are looking for</p>
-            </div>
-            {/* Quick access to all jobs with coral glow effect */}
-            <Button variant="outline" className="coral-glow-subtle hover:coral-glow transition-all duration-300" onClick={() => onViewChange('browse-jobs')}>
-              View All Jobs
-              <ArrowRight className="h-4 w-4" />
-            </Button>
-          </div>
+      {isProfessional && (
+        <section className="py-16 relative overflow-hidden">
           
-          {/* Recent jobs grid - shows up to 3 most recent open jobs */}
-          <div className="grid lg:grid-cols-3 gap-6">
-            {recentJobs.map((job) => (
-              <Card key={job.id} className="hover:shadow-elegant hover:coral-glow-subtle transition-all duration-300 cursor-pointer border-2 border-primary/20 hover:border-primary/40">
-                <CardHeader>
-                  {/* Job header with title, location, and category badge */}
-                  <div className="flex justify-between items-start">
-                    <div>
-                      <CardTitle className="text-lg">{job.title}</CardTitle>
-                      <p className="text-sm text-muted-foreground mt-1">{job.location}</p>
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+            {/* Section header with CTA button for easy navigation */}
+            <div className="flex justify-between items-center mb-12">
+              <div>
+                <h2 className="text-3xl font-bold text-foreground mb-4">Recent Local Projects</h2>
+                <p className="text-muted-foreground">See what Bermuda homeowners are looking for</p>
+              </div>
+              {/* Quick access to all jobs with coral glow effect */}
+              <Button variant="outline" className="coral-glow-subtle hover:coral-glow transition-all duration-300" onClick={() => onViewChange('browse-jobs')}>
+                View All Jobs
+                <ArrowRight className="h-4 w-4" />
+              </Button>
+            </div>
+            
+            {/* Recent jobs grid - shows up to 3 most recent open jobs */}
+            <div className="grid lg:grid-cols-3 gap-6">
+              {recentJobs.map((job) => (
+                <Card key={job.id} className="hover:shadow-elegant hover:coral-glow-subtle transition-all duration-300 cursor-pointer border-2 border-primary/20 hover:border-primary/40">
+                  <CardHeader>
+                    {/* Job header with title, location, and category badge */}
+                    <div className="flex justify-between items-start">
+                      <div>
+                        <CardTitle className="text-lg">{job.title}</CardTitle>
+                        <p className="text-sm text-muted-foreground mt-1">{job.location}</p>
+                      </div>
+                      <Badge variant="secondary">{job.category}</Badge>
                     </div>
-                    <Badge variant="secondary">{job.category}</Badge>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  {/* Truncated job description for clean layout */}
-                  <p className="text-muted-foreground mb-4">{job.description.length > 100 ? job.description.substring(0, 100) + '...' : job.description}</p>
-                  
-                  {/* Job footer with budget range and post date */}
-                  <div className="flex justify-between items-center">
-                    {/* Budget display with proper formatting (cents to dollars) */}
-                    <span className="font-semibold text-primary">
-                      {job.budget_max && job.budget_max > 0 ? 
-                        `$${(job.budget_min / 100).toLocaleString()} - $${(job.budget_max / 100).toLocaleString()}` : 
-                        `$${(job.budget_min / 100).toLocaleString()}+`
-                      }
-                    </span>
-                    {/* Post date for recency context */}
-                    <span className="text-sm text-muted-foreground">
-                      {new Date(job.created_at).toLocaleDateString()}
-                    </span>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
+                  </CardHeader>
+                  <CardContent>
+                    {/* Truncated job description for clean layout */}
+                    <p className="text-muted-foreground mb-4">{job.description.length > 100 ? job.description.substring(0, 100) + '...' : job.description}</p>
+                    
+                    {/* Job footer with budget range and post date */}
+                    <div className="flex justify-between items-center">
+                      {/* Budget display with proper formatting (cents to dollars) */}
+                      <span className="font-semibold text-primary">
+                        {job.budget_max && job.budget_max > 0 ? 
+                          `$${(job.budget_min / 100).toLocaleString()} - $${(job.budget_max / 100).toLocaleString()}` : 
+                          `$${(job.budget_min / 100).toLocaleString()}+`
+                        }
+                      </span>
+                      {/* Post date for recency context */}
+                      <span className="text-sm text-muted-foreground">
+                        {new Date(job.created_at).toLocaleDateString()}
+                      </span>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
-
+        </section>
+      )}
 
       {/* ===============================================================================
           CALL-TO-ACTION SECTION - Final conversion opportunity
