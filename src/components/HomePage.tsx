@@ -280,7 +280,7 @@ export const HomePage = ({ onViewChange }: HomePageProps) => {
           {/* Service category cards with click-through functionality */}
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {serviceCategories.map((category, index) => (
-              <Card key={index} className="hover:shadow-elegant hover:coral-glow-subtle transition-all duration-300 cursor-pointer border-2 border-accent/20 hover:border-accent/50" onClick={() => onViewChange('browse-jobs')}>
+              <Card key={index} className="hover:shadow-elegant hover:coral-glow-subtle transition-all duration-300 border-2 border-accent/20 hover:border-accent/50">
                 <CardContent className="p-6 text-center">
                   {/* Service icon with gradient background */}
                   <div className="w-12 h-12 bg-gradient-primary rounded-lg flex items-center justify-center mx-auto mb-4 coral-glow-subtle">
