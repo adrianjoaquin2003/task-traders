@@ -27,7 +27,7 @@ const Index = () => {
   const [selectedJob, setSelectedJob] = useState<any>(null);
   
   // Authentication state
-  const { loading } = useAuth();
+  const { loading, isAuthenticated } = useAuth();
 
   // Parse URL parameters and set initial view
   useEffect(() => {
@@ -40,6 +40,17 @@ const Index = () => {
       setSelectedJobId(jobId);
     }
   }, [location.search]);
+
+  // Auth guard: always redirect unauthenticated users to login
+  useEffect(() => {
+    if (loading) return;
+    if (!isAuthenticated) {
+      const params = new URLSearchParams();
+      params.set('view', 'auth');
+      navigate(`?${params.toString()}`, { replace: true });
+      setCurrentView('auth');
+    }
+  }, [isAuthenticated, loading, navigate]);
 
   // Show loading screen while checking authentication
   if (loading) {
