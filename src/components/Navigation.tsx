@@ -89,7 +89,7 @@ export const Navigation = ({
           <div className="hidden md:flex items-center space-x-8">
             {/* MAP OVER navItems - Creates a button for each navigation item */}
             {navItems.map(item => <button key={item.id} // React needs unique keys for list items
-          onClick={() => onViewChange(item.id)} // Call parent function when clicked
+          onClick={() => onViewChange(isAuthenticated ? item.id : 'auth')} // Redirect to auth if not authenticated
           className={`flex items-center space-x-1 px-3 py-2 rounded-md text-sm font-medium transition-colors ${currentView === item.id ? 'text-primary bg-primary/10' // Active state: primary color with light background
           : 'text-muted-foreground hover:text-foreground hover:bg-muted' // Inactive state with hover effects
           }`}>
@@ -138,7 +138,7 @@ export const Navigation = ({
             <div className="px-2 pt-2 pb-3 space-y-1 border-t border-border">
               {/* MOBILE NAVIGATION ITEMS - Same items as desktop but in vertical layout */}
               {navItems.map(item => <button key={item.id} onClick={() => {
-            onViewChange(item.id); // Navigate to the page
+            onViewChange(isAuthenticated ? item.id : 'auth'); // Navigate to auth if not authenticated
             setIsOpen(false); // Close mobile menu after clicking
           }} className={`flex items-center space-x-2 w-full px-3 py-2 rounded-md text-base font-medium transition-colors ${currentView === item.id ? 'text-primary bg-primary/10' // Active state styling
           : 'text-muted-foreground hover:text-foreground hover:bg-muted' // Inactive with hover
