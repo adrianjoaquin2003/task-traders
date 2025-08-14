@@ -12,6 +12,7 @@ import SubmitBidPage from '@/components/SubmitBidPage';  // Form to submit bids
 import JobDetailsPage from '@/components/JobDetailsPage';  // Job details and bids view
 import AuthPage from '@/components/AuthPage';  // Authentication page
 import MyJobsPage from '@/components/MyJobsPage';  // Job poster's job management page
+import AssignedJobsPage from '@/components/AssignedJobsPage';  // Professional's assigned jobs page
 import { useAuth } from '@/hooks/useAuth';  // Authentication hook
 
 // MAIN INDEX COMPONENT - This acts like a "single page app" controller
@@ -115,6 +116,9 @@ const Index = () => {
       case 'my-jobs':
         // Show job poster's job management page
         return <MyJobsPage onViewChange={handleViewChange} />;
+      case 'assigned-jobs':
+        // Show professional's assigned jobs page
+        return <AssignedJobsPage onViewChange={handleViewChange} />;
       case 'submit-bid':
         // Show bid submission form
         return selectedJobId ? (

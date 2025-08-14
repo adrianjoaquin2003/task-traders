@@ -1,7 +1,7 @@
 // IMPORT REACT HOOK AND UI COMPONENTS
 import { useState } from 'react'; // For managing mobile menu open/closed state
 import { Button } from '@/components/ui/button'; // Reusable button component
-import { Menu, X, Hammer, User, Plus, LogIn, LogOut } from 'lucide-react'; // Icons from Lucide library
+import { Menu, X, Hammer, User, Plus, LogIn, LogOut, CheckCircle } from 'lucide-react'; // Icons from Lucide library
 import { useAuth } from '@/hooks/useAuth'; // Authentication hook
 
 // INTERFACE - Defines what props this component expects
@@ -41,6 +41,10 @@ export const Navigation = ({
           id: 'browse-jobs',
           label: 'Browse Jobs',
           icon: null
+        }, {
+          id: 'assigned-jobs',
+          label: 'My Assignments',
+          icon: CheckCircle
         });
       } else if (isJobPoster) {
         // Job posters can view professionals and post jobs
