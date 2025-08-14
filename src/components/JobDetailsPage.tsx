@@ -139,9 +139,9 @@ const JobDetailsPage: React.FC<JobDetailsPageProps> = ({ jobId, onViewChange }) 
   // Displays budget information in a user-friendly way
   const formatBudget = (min?: number, max?: number, type?: string) => {
     if (!min && !max) return "Budget not specified";                           // No budget info
-    if (type === "fixed" && min) return `$${min.toLocaleString()}`;            // Fixed budget
-    if (min && max) return `$${min.toLocaleString()} - $${max.toLocaleString()}`; // Budget range
-    return `$${(min || max)?.toLocaleString()}`;                               // Single value (min or max)
+    if (type === "fixed" && min) return `$${(min / 100).toLocaleString()}`;            // Fixed budget
+    if (min && max) return `$${(min / 100).toLocaleString()} - $${(max / 100).toLocaleString()}`; // Budget range
+    return `$${((min || max)! / 100).toLocaleString()}`;                               // Single value (min or max)
   };
 
   const acceptBid = async (bidId: string) => {
