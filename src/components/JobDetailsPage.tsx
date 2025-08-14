@@ -16,6 +16,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import ChatButton from "@/components/ChatButton";
+import ChatInterface from "@/components/ChatInterface";
 import { useAuth } from '@/hooks/useAuth';
 import { useToast } from '@/hooks/use-toast';
 
@@ -71,6 +72,7 @@ const JobDetailsPage: React.FC<JobDetailsPageProps> = ({ jobId, onViewChange }) 
   const [job, setJob] = useState<Job | null>(null);      // Stores job details, null initially
   const [bids, setBids] = useState<Bid[]>([]);           // Stores array of bids for this job
   const [loading, setLoading] = useState(true);          // Tracks if data is still loading
+  const [showChat, setShowChat] = useState(false);       // Controls chat interface visibility
   
   // Check if current user is the job poster
   const isCurrentUserJobPoster = user && job && job.user_id === user.id;
@@ -192,10 +194,7 @@ const JobDetailsPage: React.FC<JobDetailsPageProps> = ({ jobId, onViewChange }) 
   };
 
   const handleStartChat = (conversationId: string) => {
-    toast({
-      title: "Chat Started",
-      description: "Chat functionality will open here",
-    });
+    setShowChat(true);
   };
 
   if (loading) {
@@ -439,6 +438,33 @@ const JobDetailsPage: React.FC<JobDetailsPageProps> = ({ jobId, onViewChange }) 
             </Card>
           </div>
         </div>
+
+        {/* Chat Interface */}
+        {showChat && (
+          <div className="mt-8">
+            <Card>
+              <CardHeader>
+                <div className="flex items-center justify-between">
+                  <CardTitle className="text-xl font-bold">Chat</CardTitle>
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    onClick={() => setShowChat(false)}
+                  >
+                    <ArrowLeft className="h-4 w-4 mr-2" />
+                    Close Chat
+                  </Button>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <ChatInterface 
+                  jobId={jobId} 
+                  onClose={() => setShowChat(false)} 
+                />
+              </CardContent>
+            </Card>
+          </div>
+        )}
       </div>
     </div>
   );
