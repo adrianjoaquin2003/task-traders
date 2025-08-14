@@ -170,7 +170,7 @@ export const HomePage = ({ onViewChange }: HomePageProps) => {
                     Get Started
                     <ArrowRight className="h-5 w-5" />
                   </Button>
-                  <Button size="xl" variant="outline" className="border-white text-black hover:bg-white hover:text-primary transition-all duration-500" onClick={() => onViewChange('browse-jobs')}>
+                  <Button size="xl" variant="outline" className="border-white text-black hover:bg-white hover:text-primary transition-all duration-500" onClick={() => onViewChange('auth')}>
                     Browse Jobs
                   </Button>
                 </>
@@ -327,7 +327,7 @@ export const HomePage = ({ onViewChange }: HomePageProps) => {
                 <p className="text-muted-foreground">See what Bermuda homeowners are looking for</p>
               </div>
               {/* Quick access to all jobs with coral glow effect */}
-              <Button variant="outline" className="coral-glow-subtle hover:coral-glow transition-all duration-300" onClick={() => onViewChange('browse-jobs')}>
+              <Button variant="outline" className="coral-glow-subtle hover:coral-glow transition-all duration-300" onClick={() => onViewChange(isAuthenticated ? 'browse-jobs' : 'auth')}>
                 View All Jobs
                 <ArrowRight className="h-4 w-4" />
               </Button>
@@ -409,12 +409,12 @@ export const HomePage = ({ onViewChange }: HomePageProps) => {
               {/* Final conversion buttons with responsive stacking */}
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 {/* Primary CTA - Post project with enhanced effects */}
-                <Button size="lg" variant="accent" className="coral-glow wave-hover" onClick={() => onViewChange('post-job')}>
+                <Button size="lg" variant="accent" className="coral-glow wave-hover" onClick={() => onViewChange(isAuthenticated ? 'post-job' : 'auth')}>
                   Post Your First Project
                 </Button>
                 
                 {/* Secondary CTA - Browse professionals */}
-                <Button size="lg" variant="outline" className="border-white text-black hover:bg-white hover:text-primary transition-all duration-500" onClick={() => onViewChange('professionals')}>
+                <Button size="lg" variant="outline" className="border-white text-black hover:bg-white hover:text-primary transition-all duration-500" onClick={() => onViewChange(isAuthenticated ? 'professionals' : 'auth')}>
                   Browse Professionals
                 </Button>
               </div>
