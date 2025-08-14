@@ -227,7 +227,7 @@ const JobDetailsPage: React.FC<JobDetailsPageProps> = ({ jobId, onViewChange }) 
           <Button
             variant="ghost"
             size="sm"
-            onClick={() => onViewChange("browse-jobs")}
+            onClick={() => onViewChange(isJobPoster ? "my-jobs" : "browse-jobs")}
             className="text-foreground hover:text-primary"
           >
             <ArrowLeft className="h-4 w-4 mr-2" />
