@@ -9,6 +9,7 @@ import { Send, MessageCircle, ArrowLeft } from 'lucide-react';
 import { useChat, type Conversation } from '@/hooks/useChat';
 import { useAuth } from '@/hooks/useAuth';
 import { formatDistanceToNow } from 'date-fns';
+import { supabase } from '@/integrations/supabase/client';
 
 interface ChatInterfaceProps {
   jobId?: string;
@@ -64,9 +65,23 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ jobId, onClose }) => {
   /**
    * Opens a conversation and fetches its messages
    */
-  const openConversation = (conversationId: string) => {
+  const openConversation = async (conversationId: string) => {
     fetchMessages(conversationId);
     setShowConversationList(false);
+    
+    // Mark messages as read when opening conversation
+    if (user) {
+      try {
+        await supabase
+          .from('messages')
+          .update({ read_at: new Date().toISOString() })
+          .eq('conversation_id', conversationId)
+          .eq('recipient_id', user.id)
+          .is('read_at', null);
+      } catch (error) {
+        console.error('Error marking messages as read:', error);
+      }
+    }
   };
 
   /**
