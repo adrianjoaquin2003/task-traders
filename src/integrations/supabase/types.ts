@@ -14,10 +14,44 @@ export type Database = {
   }
   public: {
     Tables: {
+      bid_payment_details: {
+        Row: {
+          bank_account_number: string
+          bid_id: string
+          created_at: string
+          id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          bank_account_number: string
+          bid_id: string
+          created_at?: string
+          id?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          bank_account_number?: string
+          bid_id?: string
+          created_at?: string
+          id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bid_payment_details_bid_id_fkey"
+            columns: ["bid_id"]
+            isOneToOne: true
+            referencedRelation: "bids"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       bids: {
         Row: {
           amount: number
-          bank_account_number: string | null
           bidder_email: string | null
           bidder_name: string | null
           bidder_phone: string | null
@@ -35,7 +69,6 @@ export type Database = {
         }
         Insert: {
           amount: number
-          bank_account_number?: string | null
           bidder_email?: string | null
           bidder_name?: string | null
           bidder_phone?: string | null
@@ -53,7 +86,6 @@ export type Database = {
         }
         Update: {
           amount?: number
-          bank_account_number?: string | null
           bidder_email?: string | null
           bidder_name?: string | null
           bidder_phone?: string | null
