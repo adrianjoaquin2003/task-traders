@@ -60,6 +60,20 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ jobId, onClose }) => {
 
     await sendMessage(activeConversation, newMessage);
     setNewMessage('');
+    
+    // Mark any unread messages as read when user responds
+    if (user) {
+      try {
+        await supabase
+          .from('messages')
+          .update({ read_at: new Date().toISOString() })
+          .eq('conversation_id', activeConversation)
+          .eq('recipient_id', user.id)
+          .is('read_at', null);
+      } catch (error) {
+        console.error('Error marking messages as read after sending:', error);
+      }
+    }
   };
 
   /**
