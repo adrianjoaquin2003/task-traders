@@ -84,7 +84,6 @@ const AssignedJobsPage: React.FC<AssignedJobsPageProps> = ({ onViewChange }) => 
         `)
         .eq('professional_id', user!.id)
         .eq('status', 'accepted')
-        .eq('status', 'in-progress')
         .order('created_at', { ascending: false });
 
       if (error) throw error;
