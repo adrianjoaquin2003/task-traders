@@ -52,11 +52,14 @@ export const Navigation = ({
           id: 'my-jobs',
           label: 'My Jobs',
           icon: null
-        }, {
-          id: 'professionals',
-          label: 'Find Pros',
-          icon: User
-        }, {
+        });
+        // Temporarily hidden - Find Pros feature
+        // baseItems.push({
+        //   id: 'professionals',
+        //   label: 'Find Pros',
+        //   icon: User
+        // });
+        baseItems.push({
           id: 'post-job',
           label: 'Post a Job',
           icon: Plus
@@ -68,11 +71,13 @@ export const Navigation = ({
         id: 'browse-jobs',
         label: 'Browse Jobs',
         icon: null
-      }, {
-        id: 'professionals',
-        label: 'Find Pros',
-        icon: User
       });
+      // Temporarily hidden - Find Pros feature
+      // baseItems.push({
+      //   id: 'professionals',
+      //   label: 'Find Pros',
+      //   icon: User
+      // });
     }
     return baseItems;
   };
